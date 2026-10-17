@@ -1,3 +1,4 @@
+import Footer from "./Footer";
 import Header from "./Header";
 
 
@@ -8,7 +9,7 @@ export default function Home(){
 
         <Header/>
     
-<main className="min-h-screen bg-slate-950 text-white">
+    <main className="min-h-screen bg-slate-950 text-white">
       <section className="mx-auto flex min-h-screen max-w-6xl items-center px-6">
         <div className="max-w-2xl">
           <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-blue-400">
@@ -36,6 +37,8 @@ export default function Home(){
           </div>
         </div>
       </section>
+
+      <Footer/>
     </main>
     </>)
 

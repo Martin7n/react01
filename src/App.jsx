@@ -5,6 +5,10 @@ import viteLogo from './assets/vite.svg'
 import './App.css'
 import Home from './components/Home'
 import { BrowserRouter, Link, Route, Routes } from 'react-router'
+import About from './components/About'
+import Catalog from './components/MainComponents/Catalog'
+import Login from './components/AuthComponents/Login'
+import Register from './components/AuthComponents/Register'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,7 +21,14 @@ function App() {
       <BrowserRouter>
 
       <Routes>     
-        <Route path="/some" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path='/register' element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/catalog" element={<Catalog />} />
+
+
+
       </Routes>
     </BrowserRouter>
 
