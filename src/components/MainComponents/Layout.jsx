@@ -1,0 +1,16 @@
+import Footer from "../SharedComponents/Footer";
+import { Outlet } from "react-router";
+import Navigation from "../SharedComponents/Navigation";
+import Header from "../SharedComponents/Header";
+
+export default function Layout() {
+    return (
+        <>
+            <div className="flex flex-col min-h-screen pt-20">
+                <Header />
+                <Outlet />
+                <Footer />
+            </div>
+        </>
+    );
+}

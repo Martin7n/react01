@@ -4,8 +4,6 @@ import Header from "./SharedComponents/Header";
 export default function Home() {
     return (
         <>
-            <Header />
-
             <main className="min-h-screen bg-slate-950 text-white">
                 <section className="mx-auto flex min-h-screen max-w-6xl items-center px-6">
                     <div className="max-w-2xl">
@@ -35,8 +33,6 @@ export default function Home() {
                         </div>
                     </div>
                 </section>
-
-                <Footer />
             </main>
         </>
     );
