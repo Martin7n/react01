@@ -49,9 +49,9 @@ export default function Register() {
             });
 
             if (result && result.success) {
-                alert(
-                    "Registration successful! Check your inbox for a verification link.",
-                );
+                // alert(
+                //     "Registration successful! Check your inbox for a verification link.",
+                // );
                 console.log(
                     "Account created via REST API successfully!",
                     result.data,

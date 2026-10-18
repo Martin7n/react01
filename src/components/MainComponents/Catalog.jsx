@@ -14,16 +14,16 @@ const initAsset = {
 };
 
 export default function Catalog() {
-    const [assets, setAssets] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const scrollContainerRef = useRef(null);
-    const [selectedAsset, setSelectedAsset] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     useEffect(() => {
         workoutsApi
             .getAll()
-            .then(setAssets)
+            .then(setCategories)
             .catch((err) => setError(err.message))
             .finally(() => setLoading(false));
     }, []);
@@ -50,7 +50,7 @@ export default function Catalog() {
                         <p>Loading...</p>
                     ) : error ? (
                         <p>Error: {error}</p>
-                    ) : assets.length === 0 ? (
+                    ) : categories.length === 0 ? (
                         <h1>No items</h1>
                     ) : (
                         /* Unified sliding deck layout wrapper container */
@@ -85,13 +85,15 @@ export default function Catalog() {
                                     msOverflowStyle: "none",
                                 }}
                             >
-                                {assets.map((asset) => (
+                                {categories.map((category) => (
                                     <Asset
-                                        key={asset.id}
-                                        asset={asset}
-                                        onSelect={() => setSelectedAsset(asset)}
+                                        key={category.id}
+                                        asset={category}
+                                        onSelect={() =>
+                                            setSelectedCategory(category)
+                                        }
                                         isSelected={
-                                            selectedAsset?.id === asset.id
+                                            selectedCategory?.id === category.id
                                         }
                                     />
                                 ))}
@@ -121,7 +123,7 @@ export default function Catalog() {
                     )}
 
                     {/* ⚡ FIXED: Moved outside the slider container and kept exactly ONE copy */}
-                    {selectedAsset && (
+                    {selectedCategory && (
                         <div className="bg-white border border-gray-200 shadow-xl rounded-2xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 animate-fadeIn">
                             {/* Large Preview Image */}
                             <div className="h-64 md:h-full min-h-[260px] bg-gray-900/10 rounded-xl flex items-center justify-center border border-gray-200">
@@ -135,12 +137,12 @@ export default function Catalog() {
                                 <div>
                                     <div className="flex items-center justify-between mb-4">
                                         <span className="text-xs uppercase font-bold tracking-widest bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-                                            {selectedAsset.category ||
+                                            {selectedCategory.category ||
                                                 "General"}
                                         </span>
                                         <button
                                             onClick={() =>
-                                                setSelectedAsset(null)
+                                                setSelectedCategory(null)
                                             }
                                             className="text-gray-400 hover:text-gray-600 font-medium text-sm transition"
                                         >
@@ -148,13 +150,13 @@ export default function Catalog() {
                                         </button>
                                     </div>
                                     <h2 className="text-3xl font-black text-gray-900 mb-2">
-                                        {selectedAsset.name}
+                                        {selectedCategory.name}
                                     </h2>
                                     <p className="text-2xl font-semibold text-blue-600 mb-4">
                                         $29.99
                                     </p>
                                     <p className="text-gray-600 leading-relaxed mb-6">
-                                        {selectedAsset.desc ||
+                                        {selectedCategory.desc ||
                                             "No extended descriptions loaded for this active module profile catalog item entry."}
                                     </p>
                                 </div>

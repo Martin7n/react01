@@ -1,4 +1,4 @@
-export default function AssetDetails({ asset }) {
+export default function Articles({ asset }) {
     console.log(asset, onSelect, isSelected);
     return (
         // <>

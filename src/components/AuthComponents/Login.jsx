@@ -39,7 +39,7 @@ export default function Login() {
 
             if (result && result.success) {
                 loginUser(result.data);
-                alert("Login successful! ");
+                // alert("Login successful! ");
                 console.log(
                     "Login successful via REST API successfully!",
                     result.data,
