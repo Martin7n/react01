@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../authContext";
+import { useAuth } from "../../context/authContext";
 
 export default function Logout() {
     const navigate = useNavigate();
@@ -9,7 +9,6 @@ export default function Logout() {
     console.log("logging out ...");
 
     useEffect(() => {
-
         logoutUser();
 
         // Redirect to login
