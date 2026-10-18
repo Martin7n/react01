@@ -8,24 +8,27 @@ import Login from "./components/AuthComponents/Login";
 import Register from "./components/AuthComponents/Register";
 import Logout from "./components/AuthComponents/Logout";
 import Layout from "./components/SharedComponents/Layout";
+import { AuthProvider } from "./components/authContext.jsx";
 
 function App() {
     const [count, setCount] = useState(0);
 
     return (
         <>
-            <BrowserRouter>
-                <Routes>
-                    <Route element={<Layout />}>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/logout" element={<Logout />} />
-                        <Route path="/catalog" element={<Catalog />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+            <AuthProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route element={<Layout />}>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/logout" element={<Logout />} />
+                            <Route path="/catalog" element={<Catalog />} />
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </AuthProvider>
         </>
     );
 }

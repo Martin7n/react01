@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import authApi from "../api/authApi";
 import reguser_simple_validator from "../../helpers/validator-helpers";
+import { useAuth } from "../authContext.jsx";
 
 export default function Register() {
     const [formData, setFormData] = useState({
@@ -12,6 +13,9 @@ export default function Register() {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formError, setFormError] = useState(null);
+
+    const { loginUser } = useAuth();
+    const navigate = useNavigate();
 
     const handleRegisterAction = async (formData) => {
         setFormError(null);
@@ -52,6 +56,18 @@ export default function Register() {
                     "Account created via REST API successfully!",
                     result.data,
                 );
+
+                // login after reg:
+
+                const loginResult = await authApi.login({
+                    email: finalEmail,
+                    password: finalPassword,
+                });
+                if (loginResult && loginResult.success) {
+                    loginUser(loginResult.data);
+                }
+                navigate("/");
+                return;
             }
         } catch (err) {
             setFormError("Registration setup error ");

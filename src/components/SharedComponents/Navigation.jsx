@@ -1,6 +1,9 @@
 import { Link } from "react-router";
+import { useAuth } from "../authContext";
 
 export default function Navigation() {
+    const { user } = useAuth();
+
     return (
         <>
             {/* Top Fixed Dark Header */}
@@ -98,32 +101,45 @@ export default function Navigation() {
                                     </Link>
                                 </li>
 
-                                <li className="md:ml-5">
-                                    <Link
-                                        to="/login"
-                                        className="py-2 inline-block text-neutral-300 hover:text-white md:px-2 font-medium transition-colors"
-                                    >
-                                        Login
-                                    </Link>
-                                </li>
-
-                                <li className="md:ml-5">
-                                    <Link
-                                        to="/register"
-                                        className="py-2 inline-block text-neutral-300 hover:text-white md:px-2 font-medium transition-colors"
-                                    >
-                                        Register
-                                    </Link>
-                                </li>
-
-                                <li className="md:ml-5">
-                                    <Link
-                                        to="/logout"
-                                        className="py-2 inline-block text-neutral-300 hover:text-white md:px-2 font-medium transition-colors"
-                                    >
-                                        Logout
-                                    </Link>
-                                </li>
+                                {!user ? (
+                                    <>
+                                        {/* Render only when guest visitor is logged out */}
+                                        <li className="md:ml-5">
+                                            <Link
+                                                to="/login"
+                                                className="py-2 inline-block text-neutral-300 hover:text-white md:px-2 font-medium transition-colors"
+                                            >
+                                                Login
+                                            </Link>
+                                        </li>
+                                        <li className="md:ml-5">
+                                            <Link
+                                                to="/register"
+                                                className="py-2 inline-block text-neutral-300 hover:text-white md:px-2 font-medium transition-colors"
+                                            >
+                                                Register
+                                            </Link>
+                                        </li>
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* Render only when active user is successfully logged in */}
+                                        <li className="md:ml-5 text-sm text-blue-400 font-semibold tracking-wide cursor-default self-center">
+                                            Logged in as:{" "}
+                                            <span className="text-white font-mono">
+                                                {user.email}
+                                            </span>
+                                        </li>
+                                        <li className="md:ml-5">
+                                            <Link
+                                                to="/logout"
+                                                className="py-2 inline-block text-neutral-300 hover:text-red-400 md:px-2 font-medium transition-colors"
+                                            >
+                                                Logout
+                                            </Link>
+                                        </li>
+                                    </>
+                                )}
 
                                 <li className="md:ml-5">
                                     <Link

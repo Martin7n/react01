@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import authApi from "../api/authApi";
 import login_cleaner from "../../helpers/login_cleaner";
+import { useAuth } from "../authContext";
 
 export default function Login() {
     // const [state, setState] = React.useState("login");
@@ -16,6 +17,7 @@ export default function Login() {
     const [formError, setFormError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    const { loginUser } = useAuth();
 
     const loginSubmitHandler = async (formData) => {
         setFormError(null);
@@ -36,11 +38,14 @@ export default function Login() {
             const result = await authApi.login({ email, password });
 
             if (result && result.success) {
+                loginUser(result.data);
                 alert("Login successful! ");
                 console.log(
                     "Login successful via REST API successfully!",
                     result.data,
                 );
+                navigate("/");
+                return;
             }
         } catch (err) {
             console.error(err);
