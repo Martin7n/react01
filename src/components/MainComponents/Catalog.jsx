@@ -59,12 +59,21 @@ export default function Catalog() {
             });
 
             if (result && result.success) {
-                setCategories((prevCategories) => [
-                    ...prevCategories,
-                    result.data,
-                ]);
-                setIsCreateModalOpen(false);
+                const updatedList = await categoryApi.getAll();
+                setCategories([...updatedList.data]);
             }
+
+            // const newCategoryObject = Array.isArray(result.data)
+            //     ? result.data[0]
+            //     : result.data;
+
+            // if (result && result.success) {
+            //     setCategories((prevCategories) => [
+            //         ...prevCategories,
+            //         result.data,
+            //     ]);
+            //     setIsCreateModalOpen(false);
+            // }
         } catch (err) {
             console.error("Database connection failure:", err.message);
             throw new Error(err.message || "Failed to save category row.");
