@@ -1,4 +1,4 @@
-export function reguser_simple_validator(email, pwd, pwd2) {
+export default function reguser_simple_validator(email, pwd, pwd2) {
     const cleanEmail = email ? email.trim().toLowerCase() : "";
     const cleanPwd = pwd ? pwd.trim() : "";
     const cleanPwd2 = pwd2 ? pwd2.trim() : "";
@@ -25,15 +25,5 @@ export function reguser_simple_validator(email, pwd, pwd2) {
             email: cleanEmail,
             password: cleanPwd,
         },
-    };
-}
-
-export function login_cleaner(email, pwd) {
-    const cleanEmail = email ? email.trim().toLowerCase() : "";
-    const cleanPwd = pwd ? pwd.trim() : "";
-
-    return {
-        email: cleanEmail,
-        password: cleanPwd,
     };
 }

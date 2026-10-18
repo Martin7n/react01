@@ -1,12 +1,51 @@
-import { Link } from "react-router";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import authApi from "../api/authApi";
+import login_cleaner from "../../helpers/login_cleaner";
 
 export default function Login() {
     // const [state, setState] = React.useState("login");
     // const [name, setName] = React.useState("");
     // const [email, setEmail] = React.useState("");
     // const [password, setPassword] = React.useState("");
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
 
-    
+    const [formError, setFormError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
+
+    const loginSubmitHandler = async (formData) => {
+        setFormError(null);
+        setIsSubmitting(true);
+
+        const email = formData.get("email");
+        const password = formData.get("password");
+
+        const validation = login_cleaner(email, password);
+        if (!validation.isValid) {
+            setFormError(validation.error);
+            return;
+        }
+
+        const { email: cleanEmail, password: cleanPwd } = validation.data;
+
+        try {
+            const result = await authApi.login({ email, password });
+
+            if (result && result.success) {
+                alert("Login successful! ");
+                console.log(
+                    "Login successful via REST API successfully!",
+                    result.data,
+                );
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <>
@@ -61,7 +100,15 @@ export default function Login() {
                             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 Sign in to your account
                             </h1>
-                            <form className="space-y-4 md:space-y-6" action="#">
+                            <form
+                                action={loginSubmitHandler}
+                                className="space-y-4 md:space-y-6"
+                            >
+                                {formError && (
+                                    <div className="p-3 text-sm text-red-800 bg-red-50 rounded-lg dark:bg-gray-700 dark:text-red-400 font-medium">
+                                        ⚠️ {formError}
+                                    </div>
+                                )}
                                 <div>
                                     <label
                                         htmlFor="email"
@@ -122,8 +169,9 @@ export default function Login() {
                                     </a>
                                 </div>
                                 <button
-                                    type="submit"
-                                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                                    disabled={isSubmitting}
+                                    // type="submit"
+                                    className="w-full text-green bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                 >
                                     Sign in
                                 </button>
@@ -143,35 +191,4 @@ export default function Login() {
             </section>
         </>
     );
-    // <form className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white">
-    //     <p className="text-2xl font-medium m-auto">
-    //         <span className="text-indigo-500">User</span> {state === "login" ? "Login" : "Sign Up"}
-    //     </p>
-    //     {state === "register" && (
-    //         <div className="w-full">
-    //             <p>Name</p>
-    //             <input onChange={(e) => setName(e.target.value)} value={name} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="text" required />
-    //         </div>
-    //     )}
-    //     <div className="w-full ">
-    //         <p>Email</p>
-    //         <input onChange={(e) => setEmail(e.target.value)} value={email} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="email" required />
-    //     </div>
-    //     <div className="w-full ">
-    //         <p>Password</p>
-    //         <input onChange={(e) => setPassword(e.target.value)} value={password} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="password" required />
-    //     </div>
-    //     {state === "register" ? (
-    //         <p>
-    //             Already have account? <span onClick={() => setState("login")} className="text-indigo-500 cursor-pointer">click here</span>
-    //         </p>
-    //     ) : (
-    //         <p>
-    //             Create an account? <span onClick={() => setState("register")} className="text-indigo-500 cursor-pointer">click here</span>
-    //         </p>
-    //     )}
-    //     <button className="bg-indigo-500 hover:bg-indigo-600 transition-all text-white w-full py-2 rounded-md cursor-pointer">
-    //         {state === "register" ? "Create Account" : "Login"}
-    //     </button>
-    // </form>
 }

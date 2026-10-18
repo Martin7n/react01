@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import user_simple_validator from "../../helpers/validator";
 import authApi from "../api/authApi";
-import reguser_simple_validator from "../../helpers/validator";
+import reguser_simple_validator from "../../helpers/validator-helpers";
 
 export default function Register() {
     const [formData, setFormData] = useState({
