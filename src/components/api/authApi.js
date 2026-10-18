@@ -1,5 +1,7 @@
 import authRequests from "./authRequests";
 
+const baseURL = `${import.meta.env.VITE_SUPABASE_URL}/auth/v1`;
+
 const authApi = {
     async login(formData) {
         const options = {
@@ -18,6 +20,7 @@ const authApi = {
         const options = {
             method: "POST",
             body: JSON.stringify(formData),
+            Prefer: "return=representation",
         };
 
         return authRequests(`${baseURL}/signup`, options, "Register");

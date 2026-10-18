@@ -29,7 +29,7 @@ export default function Asset({ asset, onSelect, isSelected }) {
                 }}
                 className="mt-4 w-full bg-black text-white py-2 rounded-lg font-medium hover:bg-gray-800 transition"
             >
-                Add to Cart
+                Subscribe
             </button>
         </div>
     );

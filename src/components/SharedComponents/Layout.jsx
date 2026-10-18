@@ -1,7 +1,7 @@
-import Footer from "../SharedComponents/Footer";
+import Footer from "./Footer";
 import { Outlet } from "react-router";
-import Navigation from "../SharedComponents/Navigation";
-import Header from "../SharedComponents/Header";
+import Navigation from "./Navigation";
+import Header from "./Header";
 
 export default function Layout() {
     return (

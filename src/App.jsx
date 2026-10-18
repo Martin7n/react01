@@ -7,7 +7,7 @@ import Catalog from "./components/MainComponents/Catalog";
 import Login from "./components/AuthComponents/Login";
 import Register from "./components/AuthComponents/Register";
 import Logout from "./components/AuthComponents/Logout";
-import Layout from "./components/MainComponents/Layout";
+import Layout from "./components/SharedComponents/Layout";
 
 function App() {
     const [count, setCount] = useState(0);

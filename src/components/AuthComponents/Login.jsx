@@ -6,25 +6,58 @@ export default function Login() {
     // const [email, setEmail] = React.useState("");
     // const [password, setPassword] = React.useState("");
 
+    
+
     return (
         <>
             <h1>Login</h1>
 
-            <section className="bg-gray-50 dark:bg-gray-900">
+            <section className="bg-gray-50 dark:bg-black">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                    <a
-                        href="#"
-                        className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-                    >
-                        <img
-                            className="w-8 h-8 mr-2"
-                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-                            alt="logo"
-                        />
-                        Flowbite
-                    </a>
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                            <Link
+                                to="/"
+                                className="flex items-center space-x-3 rtl:space-x-reverse group bg-black"
+                            >
+                                {/* Custom  Logo SVG */}
+                                <svg
+                                    className="h-9 w-9 text-blue-500 group-hover:text-blue-400 transition-colors"
+                                    viewBox="0 0 100 100"
+                                    fill="none"
+                                    xmlns="http://w3.org"
+                                >
+                                    {/* Athletic Crest / Shield Backdrop */}
+                                    <path
+                                        d="M50 5L85 20V55C85 76.5 50 95 50 95C50 95 15 76.5 15 55V20L50 5Z"
+                                        fill="currentColor"
+                                        fillOpacity="0.1"
+                                        stroke="currentColor"
+                                        strokeWidth="4"
+                                        strokeLinejoin="round"
+                                    />
+                                    {/* Dynamic Lightning Accent */}
+                                    <path
+                                        d="M15 20L50 5L85 20"
+                                        stroke="#ffffff"
+                                        strokeWidth="3"
+                                        strokeLinecap="round"
+                                    />
+                                    {/* Bold Athletic Number 7 */}
+                                    <path
+                                        d="M35 32H65L45 72"
+                                        stroke="#ffffff"
+                                        strokeWidth="10"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+
+                                <span className="self-center text-xl text-white font-black tracking-wider uppercase font-mono">
+                                    Seven{" "}
+                                    <span className="text-blue-500">Tech</span>
+                                </span>
+                            </Link>
                             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 Sign in to your account
                             </h1>

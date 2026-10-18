@@ -40,7 +40,7 @@ export default function Catalog() {
 
     return (
         <>
-            <div className="bg-gray-100 min-h-screen w-full py-12 mt-16">
+            <div className="bg-gray-900 min-h-screen w-full py-12 mt-16">
                 <div className="max-w-screen-xl mx-auto px-6 md:px-12">
                     <h1 className="text-4xl font-extrabold text-gray-950 mb-8">
                         Product Catalog

@@ -11,7 +11,7 @@ export default function Navigation() {
                         to="/"
                         className="flex items-center space-x-3 rtl:space-x-reverse group"
                     >
-                        {/* Custom Sports Logo SVG */}
+                        {/* Custom  Logo SVG */}
                         <svg
                             className="h-9 w-9 text-blue-500 group-hover:text-blue-400 transition-colors"
                             viewBox="0 0 100 100"
@@ -45,7 +45,7 @@ export default function Navigation() {
                         </svg>
 
                         <span className="self-center text-xl text-white font-black tracking-wider uppercase font-mono">
-                            Seven <span className="text-blue-500">Sports</span>
+                            Seven <span className="text-blue-500">Tech</span>
                         </span>
                     </Link>
 

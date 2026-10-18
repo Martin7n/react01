@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Footer from "./SharedComponents/Footer";
 import Header from "./SharedComponents/Header";
 
@@ -8,11 +9,11 @@ export default function Home() {
                 <section className="mx-auto flex min-h-screen max-w-6xl items-center px-6">
                     <div className="max-w-2xl">
                         <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-blue-400">
-                            SportsHub
+                            Mini TechHub
                         </p>
 
                         <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">
-                            Follow the sports
+                            Follow the tech
                             <span className="text-red-500"> you love.</span>
                         </h1>
 
@@ -23,9 +24,12 @@ export default function Home() {
                         </p>
 
                         <div className="mt-8 flex gap-4">
-                            <button className="rounded-lg bg-blue-600 px-5 py-3 font-semibold transition hover:bg-blue-500">
+                            <Link
+                                to="/catalog"
+                                className="rounded-lg bg-blue-600 px-5 py-3 font-semibold transition hover:bg-blue-500"
+                            >
                                 Explore events
-                            </button>
+                            </Link>
 
                             <button className="rounded-lg border border-slate-700 px-5 py-3 font-semibold transition hover:bg-slate-800">
                                 Sign in
