@@ -8,7 +8,7 @@ import Login from "./components/AuthComponents/Login";
 import Register from "./components/AuthComponents/Register";
 import Logout from "./components/AuthComponents/Logout";
 import Layout from "./components/SharedComponents/Layout";
-import { AuthProvider } from "./context/authContext.jsx";
+import { AuthProvider } from "./context/authContext";
 
 function App() {
     const [count, setCount] = useState(0);

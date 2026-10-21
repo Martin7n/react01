@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import authApi from "../api/authApi";
 import reguser_simple_validator from "../../helpers/validator-helpers";
-import { useAuth } from "../../context/authContext.jsx";
+import { useAuth } from "../../context/authContext";
 
 export default function Register() {
     const [formData, setFormData] = useState({

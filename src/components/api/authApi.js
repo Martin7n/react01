@@ -25,6 +25,14 @@ const authApi = {
 
         return authRequests(`${baseURL}/signup`, options, "Register");
     },
+    async getUser(accessToken) {
+        const options = {
+            method: "GET",
+            headers: { Authorization: `Bearer ${accessToken}` },
+        };
+
+        return authRequests(`${baseURL}/user`, options, "Get user");
+    },
 };
 
 export default authApi;

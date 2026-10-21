@@ -1,9 +1,14 @@
+import { Link } from "react-router";
+import { useAuth } from "../../context/authContext";
+
 export default function CategoryCard({
     category,
     onSelect,
     isSelected,
     onSubscribe,
 }) {
+    const user = useAuth();
+    console.log(user);
     return (
         <div
             onClick={onSelect}
@@ -28,15 +33,19 @@ export default function CategoryCard({
                 </span>
             </div>
 
-            <button
-                onClick={(e) => {
-                    e.stopPropagation(); // Stops card from selecting when clicking subscribe
-                    onSubscribe(category.id);
-                }}
-                className="mt-4 w-full bg-black text-white hover:bg-blue-700 text-white py-2 rounded-lg font-medium shadow transition"
-            >
-                🔔 Subscribe
-            </button>
+            {!user ? (
+                <Link to="/login"> Login </Link>
+            ) : (
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation(); // Stops card from selecting when clicking subscribe
+                        onSubscribe(category.id);
+                    }}
+                    className="mt-4 w-full bg-black text-white hover:bg-blue-700 text-white py-2 rounded-lg font-medium shadow transition"
+                >
+                    Subscribe
+                </button>
+            )}
         </div>
         // <div
         //     onClick={onSelect}

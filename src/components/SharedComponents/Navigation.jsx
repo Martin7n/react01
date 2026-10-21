@@ -4,6 +4,8 @@ import { useAuth } from "../../context/authContext";
 export default function Navigation() {
     const { user } = useAuth();
 
+    // console.log(user?.data);
+
     return (
         <>
             {/* Top Fixed Dark Header */}
@@ -83,24 +85,15 @@ export default function Navigation() {
                     <div className="hidden md:block w-full md:w-auto" id="menu">
                         <nav className="w-full bg-neutral-900 md:bg-transparent rounded px-6 py-4 mt-4 text-center md:p-0 md:mt-0 md:shadow-none">
                             <ul className="md:flex items-center">
-                                <li>
-                                    <Link
-                                        to="/about"
-                                        className="py-2 inline-block text-neutral-300 hover:text-white md:hidden lg:block font-medium transition-colors"
-                                    >
-                                        About Us
-                                    </Link>
-                                </li>
-
-                                <li className="md:ml-5">
+                                {/* Catalog Action Button */}
+                                <li className="md:ml-6 mt-3 md:mt-0">
                                     <Link
                                         to="/catalog"
-                                        className="py-2 inline-block text-neutral-300 hover:text-white md:px-2 font-medium transition-colors"
+                                        className="inline-block font-semibold px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 border border-transparent rounded-lg shadow transition-all duration-200"
                                     >
-                                        Products / MainACC
+                                        Catalog
                                     </Link>
                                 </li>
-
                                 {!user ? (
                                     <>
                                         {/* Render only when guest visitor is logged out */}
@@ -127,7 +120,7 @@ export default function Navigation() {
                                         <li className="md:ml-5 text-sm text-blue-400 font-semibold tracking-wide cursor-default self-center">
                                             Logged in as:{" "}
                                             <span className="text-white font-mono">
-                                                {user.email}
+                                                {user?.email}
                                             </span>
                                         </li>
                                         <li className="md:ml-5">
@@ -141,22 +134,16 @@ export default function Navigation() {
                                     </>
                                 )}
 
-                                <li className="md:ml-5">
+                                <li>
+                                    {/* <Link
+                                        to="/about"
+                                        className="py-2 inline-block text-neutral-100 hover:text-blue md:hidden lg:block font-medium transition-colors"
+                                    > */}
                                     <Link
-                                        to="/contact"
-                                        className="py-2 inline-block text-neutral-300 hover:text-white md:px-2 font-medium transition-colors"
+                                        to="/about"
+                                        className="inline-block py-2 text-white hover:text-yellow-200 md:hidden lg:block font-medium transition-colors duration-200"
                                     >
-                                        Contact Us
-                                    </Link>
-                                </li>
-
-                                {/* Catalog Action Button */}
-                                <li className="md:ml-6 mt-3 md:mt-0">
-                                    <Link
-                                        to="/catalog"
-                                        className="inline-block font-semibold px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 border border-transparent rounded-lg shadow transition-all duration-200"
-                                    >
-                                        Catalog
+                                        About Project
                                     </Link>
                                 </li>
                             </ul>

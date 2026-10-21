@@ -1,13 +1,20 @@
 import { Link } from "react-router";
 import Footer from "./SharedComponents/Footer";
 import Header from "./SharedComponents/Header";
+import { useAuth } from "../context/authContext";
 
 export default function Home() {
+    const { user } = useAuth();
+
     return (
         <>
             <main className="min-h-screen bg-slate-950 text-white">
                 <section className="mx-auto flex min-h-screen max-w-6xl items-center px-6">
-                    <div className="max-w-2xl">
+                    <div
+                        className={`max-w-2xl ${
+                            user ? "mx-auto text-center" : ""
+                        }`}
+                    >
                         <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-blue-400">
                             Mini TechHub
                         </p>
@@ -23,7 +30,9 @@ export default function Home() {
                             fans.
                         </p>
 
-                        <div className="mt-8 flex gap-4">
+                        <div
+                            className={`mt-8 flex gap-4 ${user ? "justify-center" : ""}`}
+                        >
                             <Link
                                 to="/catalog"
                                 className="rounded-lg bg-blue-600 px-5 py-3 font-semibold transition hover:bg-blue-500"
@@ -31,9 +40,14 @@ export default function Home() {
                                 Explore events
                             </Link>
 
-                            <button className="rounded-lg border border-slate-700 px-5 py-3 font-semibold transition hover:bg-slate-800">
-                                Sign in
-                            </button>
+                            {!user && (
+                                <Link
+                                    to="/login"
+                                    className="rounded-lg border border-slate-700 px-5 py-3 font-semibold transition hover:bg-slate-800"
+                                >
+                                    Sign in
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </section>
