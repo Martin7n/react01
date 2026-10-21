@@ -3,8 +3,9 @@ import categoryApi from "../../api/catalogApi";
 import CategoryCard from "./CategoryCard";
 import ArticleReader from "./ArticleReader";
 import CreateCategoryModal from "./CreateCategoryModal";
-import { useAuth } from "../../hooks/usePersistedState";
 import Articles from "./Articles";
+import { useAuth } from "../../context/authContext";
+import EditCategoryModal from "./EditCategoryModal";
 
 const mockArticlesByCat = {
     1: [
@@ -48,6 +49,8 @@ export default function Catalog() {
     const { user } = useAuth();
     const [activeReadingArticle, setActiveReadingArticle] = useState(null);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
 
     const handleCreateCategorySubmit = async (newCategoryData) => {
         const { name, description, imgUrl } = newCategoryData;
@@ -282,10 +285,16 @@ export default function Catalog() {
                         onClose={() => setActiveReadingArticle(null)}
                     />
 
-                    {/* Create Category Modal Overlay */}
                     {isCreateModalOpen && (
                         <CreateCategoryModal
                             onClose={() => setIsCreateModalOpen(false)}
+                            onCreateSuccess={handleCreateCategorySubmit}
+                        />
+                    )}
+
+                    {isEditModalOpen && (
+                        <EditCategoryModal
+                            onClose={() => setIsEditModalOpen(false)}
                             onCreateSuccess={handleCreateCategorySubmit}
                         />
                     )}

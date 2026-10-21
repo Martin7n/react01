@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useAuth } from "../../hooks/usePersistedState";
+import { useAuth } from "../../context/authContext";
 
 export default function Navigation() {
     const { user } = useAuth();

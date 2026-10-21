@@ -1,27 +1,5 @@
 import { Link } from "react-router";
-import { useAuth } from "../../hooks/usePersistedState";
-
-const assets = {
-    1: [
-        {
-            id: "76bbae96-8b2b-4846-b89b-bd1a4947cc50aaaaaaaaaaaaa",
-            title: "Pro Laptop Tweaks for Maximum Battery Life",
-            summary: "Learn to stretch your portable system cells.",
-        },
-        {
-            id: 102,
-            title: "Hardware upgrades: RAM vs NVMe modules",
-            summary: "Pinpoint performance block constraints.",
-        },
-    ],
-    2: [
-        {
-            id: 201,
-            title: "Color calibration guidelines for layout grids",
-            summary: "Get crisp visual alignments on team monitors.",
-        },
-    ],
-};
+import { useAuth } from "../../context/authContext";
 
 export default function CategoryCard({
     category,
@@ -29,7 +7,17 @@ export default function CategoryCard({
     isSelected,
     onSubscribe,
 }) {
-    const user = useAuth();
+    const { user, loading } = useAuth();
+    if (loading) return null;
+
+    const checkAuthor = Boolean(user) && user.id === category.author;
+
+    const handleEdit = () => {
+        console.log("edit");
+    };
+    const handleDelete = () => {
+        console.log("del");
+    };
 
     return (
         <div
@@ -78,8 +66,16 @@ export default function CategoryCard({
                     Subscribe
                 </button>
             )}
+            <div>
+                <br></br>
 
-            <button>Edit</button>
+                {checkAuthor && (
+                    <>
+                        <button onClick={handleEdit}>Edit</button>
+                        <button onClick={handleDelete}>Delete</button>
+                    </>
+                )}
+            </div>
         </div>
     );
 }
