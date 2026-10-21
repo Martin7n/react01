@@ -3,12 +3,13 @@ import categoryApi from "../../api/catalogApi";
 import CategoryCard from "./CategoryCard";
 import ArticleReader from "./ArticleReader";
 import CreateCategoryModal from "./CreateCategoryModal";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "../../hooks/usePersistedState";
+import Articles from "./Articles";
 
 const mockArticlesByCat = {
     1: [
         {
-            id: 101,
+            id: "76bbae96-8b2b-4846-b89b-bd1a4947cc50aaaaaaaaaaaaa",
             title: "Pro Laptop Tweaks for Maximum Battery Life",
             summary: "Learn to stretch your portable system cells.",
         },
@@ -235,7 +236,12 @@ export default function Catalog() {
                                     Articles in this category:
                                 </h3>
                                 <div className="space-y-3">
-                                    {(
+                                    {/* {selectedCategory ? (
+                                        <Articles category={category} />
+                                    ) : (
+                                        <></>
+                                    )} */}
+                                    {/* {(
                                         mockArticlesByCat[
                                             selectedCategory.id
                                         ] || []
@@ -264,7 +270,7 @@ export default function Catalog() {
                                             No documentation items loaded under
                                             this module node yet.
                                         </p>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
                         </div>

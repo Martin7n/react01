@@ -1,5 +1,5 @@
-export default function ArticleReader({ article, onClose }) {
-    if (!article) return null;
+export default function ArticleReader({ category, onClose }) {
+    if (!category) return null;
 
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
@@ -20,7 +20,7 @@ export default function ArticleReader({ article, onClose }) {
                 {/* Article Copy Text Structure */}
                 <article className="prose dark:prose-invert max-w-none flex-grow">
                     <h1 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-4">
-                        {article.title}
+                        {category.id}
                     </h1>
                     <div className="text-sm text-gray-400 mb-6 flex space-x-4">
                         <span>Published: October 2026</span>
