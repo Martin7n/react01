@@ -79,7 +79,7 @@
 // }
 
 import { createContext, useContext, useEffect, useState } from "react";
-import authApi from "../components/api/authApi";
+import authApi from "../api/authApi";
 
 const AuthContext = createContext(null);
 
@@ -107,7 +107,7 @@ export function AuthProvider({ children }) {
 
                 setUser(userData);
 
-                localStorage.setItem("user_profile", JSON.stringify(userData    ));
+                localStorage.setItem("user_profile", JSON.stringify(userData));
             } catch (error) {
                 console.error("Authentication initialization failed:", error);
 

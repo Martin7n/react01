@@ -1,5 +1,5 @@
 import { useState } from "react";
-import categoryApi from "../api/catalogApi";
+import categoryApi from "../../api/catalogApi";
 
 export default function CreateCategoryModal({ onClose, onCreateSuccess }) {
     const [isSubmitting, setIsSubmitting] = useState(false);

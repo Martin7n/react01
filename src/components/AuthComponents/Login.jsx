@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import authApi from "../api/authApi";
+import authApi from "../../api/authApi";
 import login_cleaner from "../../helpers/login_cleaner";
 import { useAuth } from "../../context/authContext";
 

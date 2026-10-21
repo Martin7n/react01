@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
-import authApi from "../api/authApi";
+import authApi from "../../api/authApi";
 import reguser_simple_validator from "../../helpers/validator-helpers";
 import { useAuth } from "../../context/authContext";
 

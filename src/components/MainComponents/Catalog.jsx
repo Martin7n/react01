@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import categoryApi from "../api/catalogApi";
+import categoryApi from "../../api/catalogApi";
 import CategoryCard from "./CategoryCard";
 import ArticleReader from "./ArticleReader";
 import CreateCategoryModal from "./CreateCategoryModal";
 import { useAuth } from "../../context/authContext";
-    
+
 const mockArticlesByCat = {
     1: [
         {
