@@ -14,7 +14,6 @@ export default async function apiCollectionRequests(
 
     // check the auth with the backend. If it fails, skiping the Authorization token.
     // Should  works with the refresh token.
-
     try {
         const storedToken = localStorage.getItem("access_token");
         if (storedToken) {
@@ -36,17 +35,24 @@ export default async function apiCollectionRequests(
         headers.Authorization = `Bearer ${token}`;
     }
 
-    // const token = localStorage.getItem("access_token") || SUPABASE_KEY;
+    token = localStorage.getItem("access_token") || SUPABASE_KEY;
+
+    const headers = {
+        apikey: SUPABASE_KEY,
+        "Content-Type": "application/json",
+        Prefer: "return=representation", // Forces PostgREST to return the newly generated data arrays [1]
+        ...options.headers,
+    };
+
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
         ...options,
         method: method,
-        headers: {
-            apikey: SUPABASE_KEY,
-            // Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-            Prefer: "return=representation",
-            ...options.headers,
-        },
+        headers,
+        ...options,
     });
 
     if (!response.ok) {
