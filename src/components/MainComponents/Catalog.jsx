@@ -14,6 +14,7 @@ export default function Catalog() {
 
     const [userSubscriptions, setUserSubscriptions] = useState([]);
     const [profileLoading, setProfileLoading] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const navigate = useNavigate();
 
@@ -118,9 +119,47 @@ export default function Catalog() {
             );
         }
     };
-
+    const filteredCategories = categories.filter((category) => {
+        const searchString = searchQuery.toLowerCase();
+        return (
+            category.name?.toLowerCase().includes(searchString) ||
+            category.description?.toLowerCase().includes(searchString)
+        );
+    });
     return (
         <>
+            <div className="mb-8 max-w-md mx-auto">
+                <div className="relative">
+                    <input
+                        type="text"
+                        // 1. Controlled Binding: Forces the input's current visual value to match React memory state exactly
+                        value={searchQuery}
+                        // 2. Controlled Synchronizer: Fires on every single keystroke to update the state variable string
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Live filter topics (e.g., Cybersecurity, React)..."
+                        className="w-full bg-gray-800 border border-gray-700 rounded-xl py-2.5 pl-4 pr-10 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-150 text-sm shadow-inner"
+                    />
+
+                    {/* Quick clear button overlay that shows up only if text exists inside the state variable */}
+                    {searchQuery && (
+                        <button
+                            onClick={() => setSearchQuery("")}
+                            className="absolute right-3 top-2.5 text-xs text-gray-500 hover:text-white transition font-mono font-bold cursor-pointer"
+                        >
+                            ✕
+                        </button>
+                    )}
+                </div>
+
+                {/* Real-time typing telemetry tracker display (Perfect to show off for a project presentation defense!) */}
+                {searchQuery && (
+                    <p className="text-[10px] font-mono text-gray-500 mt-1.5 text-center">
+                        React State Stream Matrix:{" "}
+                        <span className="text-blue-400">"{searchQuery}"</span> (
+                        {searchQuery.length} chars)
+                    </p>
+                )}
+            </div>
             <div className="bg-gray-900 min-h-screen w-full py-12 mt-16 text-white">
                 <div className="max-w-screen-xl mx-auto px-6 md:px-12">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-800 pb-6 mb-8">
@@ -171,7 +210,7 @@ export default function Catalog() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            {categories.map((category) => {
+                            {filteredCategories.map((category) => {
                                 const articleCount =
                                     category.articles &&
                                     Array.isArray(category.articles)
