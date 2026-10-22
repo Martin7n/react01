@@ -2,10 +2,14 @@
 
 A high-performance, secure, and fully responsive documentation hub engineered as a decoupled single-page application (SPA) architecture utilizing **React (Vite)**, **Tailwind CSS**, and a **Supabase (PostgREST API)** backend.
 
+Check out the live deployment on [Vercel](https://react01-eight.vercel.app/)
+
 ## Live Production Deployment
 
 - **Frontend Hosting Layer:** [Vercel Deployment Pipeline](https://vercel.com)
 - **Secure Database Infrastructure:** [Supabase Cluster Nodes](https://supabase.com)
+
+* **Web UI Hosting Layer:** [SevenTech Portal on Vercel](https://react01-eight.vercel.app/)
 
 ---
 
@@ -152,5 +156,3 @@ Unauthorized responses are handled through the centralized request infrastructur
     To preview the production build locally:
 
     npm run preview
-
-    
