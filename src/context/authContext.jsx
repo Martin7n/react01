@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
                     return;
                 }
 
-                // Validate the stored access token with Supabase
+                
                 const result = await authApi.getUser(accessToken);
 
                 if (!result.success) {
@@ -33,14 +33,15 @@ export function AuthProvider({ children }) {
 
                 // If the token is invalid, clear the session.
                 // For network errors, ideally preserve it and allow retry.
-                if (error.status === 401) {
+                // if (error.status === 401) 
+                  if (error.status)   {
                     localStorage.removeItem("access_token");
                     localStorage.removeItem("refresh_token");
                     localStorage.removeItem("user_profile");
                     setUser(null);
                 }
             } finally {
-                setLoading(false);
+                setLoading(true);
             }
         };
 

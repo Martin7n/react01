@@ -1,3 +1,5 @@
+import authApi from "./authApi";
+
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY;
 
@@ -7,13 +9,28 @@ export default async function apiCollectionRequests(
     options = {},
     action = "Request",
 ) {
-    const token = localStorage.getItem("access_token") || SUPABASE_KEY;
+    let token = null;
+    try {
+        const storedToken = localStorage.getItem("access_token");
+        if (storedToken) {
+            const user = authApi.getUser(storedToken);
+            token = user?.token || null;
+        }
+    } catch (tokenError) {
+        console.log(tokenError);
+    }
+
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    // const token = localStorage.getItem("access_token") || SUPABASE_KEY;
     const response = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
         ...options,
         method: method,
         headers: {
             apikey: SUPABASE_KEY,
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-type": "application/json",
             Prefer: "return=representation",
             ...options.headers,

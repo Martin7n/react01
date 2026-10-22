@@ -9,6 +9,7 @@ import Register from "./components/AuthComponents/Register";
 import Logout from "./components/AuthComponents/Logout";
 import Layout from "./components/SharedComponents/Layout";
 import { AuthProvider } from "./context/authContext";
+import CategoryPage from "./components/MainComponents/CategoryPage";
 
 function App() {
     const [count, setCount] = useState(0);
@@ -25,6 +26,10 @@ function App() {
                             <Route path="/login" element={<Login />} />
                             <Route path="/logout" element={<Logout />} />
                             <Route path="/catalog" element={<Catalog />} />
+                            <Route
+                                path="/catalog/:id"
+                                element={<CategoryPage />}
+                            />
                         </Route>
                     </Routes>
                 </BrowserRouter>

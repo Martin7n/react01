@@ -1,56 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+
+
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router";
 import categoryApi from "../../api/catalogApi";
-import CategoryCard from "./CategoryCard";
-import ArticleReader from "./ArticleReader";
-import CreateCategoryModal from "./CreateCategoryModal";
-import Articles from "./Articles";
 import { useAuth } from "../../context/authContext";
-import EditCategoryModal from "./EditCategoryModal";
-
-const mockArticlesByCat = {
-    1: [
-        {
-            id: "76bbae96-8b2b-4846-b89b-bd1a4947cc50aaaaaaaaaaaaa",
-            title: "Pro Laptop Tweaks for Maximum Battery Life",
-            summary: "Learn to stretch your portable system cells.",
-        },
-        {
-            id: 102,
-            title: "Hardware upgrades: RAM vs NVMe modules",
-            summary: "Pinpoint performance block constraints.",
-        },
-    ],
-    2: [
-        {
-            id: 201,
-            title: "Color calibration guidelines for layout grids",
-            summary: "Get crisp visual alignments on team monitors.",
-        },
-    ],
-};
-
-const baseCat = {
-    id: "",
-    created_at: "",
-    name: "",
-    description: "",
-    articles: "",
-    author: "",
-    subscribers: "",
-    imgUrl: "",
-};
+import CreateCategoryModal from "./CreateCategoryModal";
+import articleApi from "../../api/articleApi";
 
 export default function Catalog() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const scrollContainerRef = useRef(null);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const { user } = useAuth();
-    const [activeReadingArticle, setActiveReadingArticle] = useState(null);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     const handleCreateCategorySubmit = async (newCategoryData) => {
         const { name, description, imgUrl } = newCategoryData;
@@ -59,29 +22,22 @@ export default function Catalog() {
                 name,
                 description,
                 imgUrl,
-                // author: user?.id,
             });
 
             if (result && result.success) {
                 const updatedList = await categoryApi.getAll();
                 setCategories([...updatedList.data]);
+                setIsCreateModalOpen(false);
             }
-
-            // const newCategoryObject = Array.isArray(result.data)
-            //     ? result.data[0]
-            //     : result.data;
-
-            // if (result && result.success) {
-            //     setCategories((prevCategories) => [
-            //         ...prevCategories,
-            //         result.data,
-            //     ]);
-            //     setIsCreateModalOpen(false);
-            // }
         } catch (err) {
             console.error("Database connection failure:", err.message);
             throw new Error(err.message || "Failed to save category row.");
         }
+    };
+
+    const handleSubscribe = (e, categoryId) => {
+        e.stopPropagation();
+        alert("Subscribing to category ID: " + categoryId);
     };
 
     useEffect(() => {
@@ -96,25 +52,15 @@ export default function Catalog() {
             .finally(() => setLoading(false));
     }, []);
 
-    const scroll = (direction) => {
-        if (scrollContainerRef.current) {
-            const scrollAmount = 340;
-            scrollContainerRef.current.scrollBy({
-                left: direction === "left" ? -scrollAmount : scrollAmount,
-                behavior: "smooth",
-            });
-        }
-    };
-
     return (
         <>
-            <div className="bg-gray-900 min-h-screen w-full py-12 mt-16">
+            <div className="bg-gray-900 min-h-screen w-full py-12 mt-16 text-white">
                 <div className="max-w-screen-xl mx-auto px-6 md:px-12">
-                    {/* Aligned Header Row with Dark Gray Create Button for logged-in accounts */}
+                    {/* Aligned Header Row */}
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-800 pb-6 mb-8">
                         <div className="hidden sm:block w-40"></div>
 
-                        <h1 className="text-4xl font-extrabold text-white tracking-tight text-center">
+                        <h1 className="text-4xl font-extrabold tracking-tight text-center">
                             Category Catalog
                         </h1>
 
@@ -145,161 +91,98 @@ export default function Catalog() {
                         </div>
                     </div>
 
-                    {/* Main Slider Row */}
+                    {/* Status States */}
                     {loading ? (
-                        <p className="text-white text-center animate-pulse">
-                            Loading...
+                        <p className="text-center text-gray-400 animate-pulse py-12">
+                            Loading categories...
                         </p>
                     ) : error ? (
-                        <p className="text-red-400 text-center">
+                        <p className="text-red-400 text-center py-12">
                             Error: {error}
                         </p>
+                    ) : categories.length === 0 ? (
+                        <div className="text-center py-12 text-gray-500 font-medium text-lg">
+                            No categories available at the moment.
+                        </div>
                     ) : (
-                        <div className="relative group w-full mb-12">
-                            <button
-                                onClick={() => scroll("left")}
-                                className="absolute -left-20 top-1/2 -translate-y-1/2 z-10 bg-white border p-3 rounded-full shadow-lg hidden md:flex opacity-0 group-hover:opacity-100 transition"
-                            >
-                                ◀
-                            </button>
-
-                            <div
-                                ref={scrollContainerRef}
-                                className="flex space-x-6 overflow-x-auto pb-6 px-4 snap-x snap-mandatory scroll-smooth scrollbar-none"
-                                style={{
-                                    scrollbarWidth: "none",
-                                    msOverflowStyle: "none",
-                                }}
-                            >
-                                {categories.length === 0 ? (
-                                    <div className="w-full text-center py-12 text-gray-400 font-semibold text-lg select-none">
-                                        No categories available at the moment.
-                                    </div>
-                                ) : (
-                                    categories.map((category) => (
-                                        <CategoryCard
-                                            key={category.id}
-                                            category={category}
-                                            onSelect={() => {
-                                                setSelectedCategory(category);
-                                            }}
-                                            isSelected={
-                                                selectedCategory?.id ===
-                                                category.id
-                                            }
-                                            onSubscribe={(id) =>
-                                                alert(
-                                                    "Subscribing to category ID: " +
-                                                        id,
-                                                )
-                                            }
-                                        />
-                                    ))
-                                )}
-                            </div>
-
-                            <button
-                                onClick={() => scroll("right")}
-                                className="absolute -right-20 top-1/2 -translate-y-1/2 z-10 bg-white border p-3 rounded-full shadow-lg hidden md:flex opacity-0 group-hover:opacity-100 transition"
-                            >
-                                ▶
-                            </button>
-                        </div>
-                    )}
-
-                    {/* Tier 2: Category Selected ──► Show Details and Sub-Articles Row */}
-                    {selectedCategory && (
-                        <div className="bg-white rounded-2xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 animate-fadeIn mb-8">
-                            <div>
-                                <div className="flex justify-between items-center mb-4">
-                                    <span className="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-full text-xs uppercase">
-                                        Selected Category
-                                    </span>
-                                    <button
-                                        onClick={() =>
-                                            setSelectedCategory(null)
-                                        }
-                                        className="text-gray-400 hover:text-gray-600 transition-colors"
-                                    >
-                                        ✕ Close
-                                    </button>
-                                </div>
-                                <h2 className="text-3xl font-black text-gray-900 mb-2">
-                                    {selectedCategory.name}
-                                </h2>
-                                <p className="text-gray-600 mb-6">
-                                    {selectedCategory.description ||
-                                        "No overview profile details."}
-                                </p>
-                            </div>
-
-                            {/* Sub-Articles Grid Stream inside selected space */}
-                            <div className="border-t md:border-t-0 md:border-l border-gray-100 pt-6 md:pt-0 md:pl-8">
-                                <h3 className="text-lg font-bold text-gray-900 mb-4">
-                                    Articles in this category:
-                                </h3>
-                                <div className="space-y-3">
-                                    {/* {selectedCategory ? (
-                                        <Articles category={category} />
-                                    ) : (
-                                        <></>
-                                    )} */}
-                                    {/* {(
-                                        mockArticlesByCat[
-                                            selectedCategory.id
-                                        ] || []
-                                    ).map((article) => (
-                                        <div
-                                            key={article.id}
-                                            onClick={() =>
-                                                setActiveReadingArticle(article)
-                                            }
-                                            className="p-4 bg-gray-50 border border-gray-100 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition cursor-pointer flex justify-between items-center font-semibold"
-                                        >
-                                            <span className="text-gray-800">
-                                                {article.title}
-                                            </span>
-                                            <span className="text-xs text-blue-600 uppercase font-bold">
-                                                Read →
-                                            </span>
+                        /* Responsive Grid Layout */
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {categories.map((category) => (
+                                <div
+                                    key={category.id}
+                                    onClick={() =>
+                                        navigate(`/catalog/${category.id}`)
+                                    }
+                                    className="bg-gray-800 border border-gray-700 rounded-xl p-4 shadow-md hover:shadow-xl hover:border-blue-500 transition duration-200 cursor-pointer flex flex-col justify-between group"
+                                >
+                                    <div>
+                                        <div className="h-40 w-full bg-gray-700/50 rounded-lg mb-4 overflow-hidden flex items-center justify-center p-2">
+                                            {category.imgUrl ? (
+                                                <img
+                                                    src={category.imgUrl}
+                                                    alt={category.name}
+                                                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-200"
+                                                />
+                                            ) : (
+                                                <div className="text-gray-500 text-xs">
+                                                    No Image
+                                                </div>
+                                            )}
                                         </div>
-                                    ))}
-                                    {(
-                                        mockArticlesByCat[
-                                            selectedCategory.id
-                                        ] || []
-                                    ).length === 0 && (
-                                        <p className="text-gray-400 text-sm italic">
-                                            No documentation items loaded under
-                                            this module node yet.
+
+                                        <h2 className="text-lg font-bold text-gray-100 truncate group-hover:text-blue-400 transition duration-200">
+                                            {category.name}
+                                        </h2>
+                                        <p className="text-gray-400 text-sm mt-1 line-clamp-2">
+                                            {category.description ||
+                                                "No description provided."}
                                         </p>
-                                    )} */}
+                                    </div>
+
+                                    {/* Action row at bottom of card */}
+                                    <div className="mt-4 pt-3 border-t border-gray-700 flex items-center justify-between gap-2">
+                                        {!user ? (
+                                            <Link
+                                                to="/login"
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                                className="text-xs text-gray-400 hover:text-white transition underline"
+                                            >
+                                                Log in to subscribe
+                                            </Link>
+                                        ) : (
+                                            <button
+                                                onClick={(e) =>
+                                                    handleSubscribe(
+                                                        e,
+                                                        category.id,
+                                                    )
+                                                }
+                                                className="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1.5 rounded-lg font-semibold shadow transition cursor-pointer"
+                                            >
+                                                Subscribe
+                                            </button>
+                                        )}
+
+                                        <span className="text-xs font-bold text-blue-400 group-hover:text-blue-300 uppercase tracking-wider flex items-center gap-0.5">
+                                            Details &rarr;
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
                         </div>
-                    )}
-
-                    {/* Tier 3: Reading overlay view layer opens up */}
-                    <ArticleReader
-                        article={activeReadingArticle}
-                        onClose={() => setActiveReadingArticle(null)}
-                    />
-
-                    {isCreateModalOpen && (
-                        <CreateCategoryModal
-                            onClose={() => setIsCreateModalOpen(false)}
-                            onCreateSuccess={handleCreateCategorySubmit}
-                        />
-                    )}
-
-                    {isEditModalOpen && (
-                        <EditCategoryModal
-                            onClose={() => setIsEditModalOpen(false)}
-                            onCreateSuccess={handleCreateCategorySubmit}
-                        />
                     )}
                 </div>
             </div>
+
+            {isCreateModalOpen && (
+                <CreateCategoryModal
+                    isOpen={isCreateModalOpen}
+                    onClose={() => setIsCreateModalOpen(false)}
+                    onSubmit={handleCreateCategorySubmit}
+                />
+            )}
         </>
     );
 }
