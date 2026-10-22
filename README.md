@@ -3,14 +3,14 @@
 A modern, responsive technical documentation platform built with React, Vite, Tailwind CSS, and Supabase. SevenTech Node provides a centralized space for browsing technical categories, reading and publishing documentation, and discovering personalized content through category subscriptions.
 
 ✨ Features
-📚 Technical Catalog — Browse documentation categories with dynamically displayed article counts.
-📝 Article Management — Create, edit, delete, and read documentation articles.
-🔐 Authentication & Session Recovery — Validate access tokens, refresh expired sessions, and handle authentication failures.
-📌 Category Subscriptions — Follow technical categories and manage subscription preferences.
-📰 Personalized Dashboard — View a chronological feed of articles from followed categories.
-📱 Responsive Dark Interface — Navigate the application through a responsive interface designed for desktop and mobile devices.
-🛡️ Database Access Control — Enforce permissions through Supabase Row-Level Security (RLS).
-💡 Humorous Password Recovery Page — A lighthearted interface for users who have forgotten their credentials.
+Technical Catalog — Browse documentation categories with dynamically displayed article counts.
+Article Management — Create, edit, delete, and read documentation articles.
+Authentication and Session Recovery — Validate access tokens, refresh expired sessions, and handle authentication failures.
+Category Subscriptions — Follow technical categories and manage subscription preferences.
+Personalized Dashboard — View a chronological feed of articles from followed categories.
+Responsive Dark Interface — Responsive layouts for desktop and mobile devices.
+Database Access Control — Enforce permissions through Supabase Row-Level Security (RLS).
+Password Recovery Interface — A humorous, lighthearted experience for users who have forgotten their credentials.
 🛠️ Tech Stack
 Technology Purpose
 React Component-based user interface
@@ -40,93 +40,80 @@ G[RLS Policies]
     E --> F
     F --> G
 
-The application separates interface components, authentication state, request execution, and resource-specific API operations into dedicated modules.
-
 📁 Project Structure
 src/
 ├── api/
-│ ├── apiRequests.js # Centralized API request handling
-│ ├── articleApi.js # Article-related API operations
-│ ├── authApi.js # Authentication orchestration and token refresh
-│ ├── authRequests.js # Direct authentication requests to Supabase
-│ ├── catalogApi.js # Category catalog operations
-│ └── profileApi.js # Profile and subscription operations
-│
-├── assets/ # Images and static resources
-│
+│ ├── apiRequests.js
+│ ├── articleApi.js
+│ ├── authApi.js
+│ ├── authRequests.js
+│ ├── catalogApi.js
+│ └── profileApi.js
+├── assets/
 ├── components/
-│ ├── AuthComponents/ # Authentication interface components
-│ ├── MainComponents/ # Main application interface components
-│ ├── SharedComponents/ # Reusable UI components
-│ ├── StaticComponents/ # Static and informational components
-│ ├── UserProfile/ # User profile interface components
-│ └── Home.jsx # Home page component
-│
+│ ├── AuthComponents/
+│ ├── MainComponents/
+│ ├── SharedComponents/
+│ ├── StaticComponents/
+│ ├── UserProfile/
+│ └── Home.jsx
 ├── context/
-│ └── authContext.jsx # Global authentication state and provider
-│
-├── helpers/ # Supporting application functions
-├── hooks/ # Custom React hooks
-├── utils/ # Shared utility functions
-│
-├── App.css # Application-level styles
-├── App.jsx # Root component and routing
-├── index.css # Global CSS
-└── main.jsx # Application entry point
+│ └── authContext.jsx
+├── helpers/
+├── hooks/
+├── utils/
+├── App.css
+├── App.jsx
+├── index.css
+└── main.jsx
 
-Module Responsibilities
-API Layer — src/api/
-
-The API layer separates authentication workflows from the execution of requests and resource-specific data operations.
-
-File Responsibility
-apiRequests.js Centralized API request handling and shared response processing.
-articleApi.js Operations for retrieving and managing documentation articles.
-authApi.js Manages authentication request parameters, coordinates token refresh, and handles re-requesting operations when an access token expires.
-authRequests.js Executes the underlying authentication requests directly against Supabase.
-catalogApi.js Retrieves and manages technical category catalog data.
-profileApi.js Handles user profile data and category subscription operations.
-Authentication Context — src/context/
-File Responsibility
-authContext.jsx Maintains shared authentication state and exposes user information and authentication functionality throughout the React component tree.
-UI Components — src/components/
-Directory / File Responsibility
-AuthComponents/ Authentication-related interface components.
-MainComponents/ Components supporting the primary application interface.
-SharedComponents/ Reusable UI elements shared across different parts of the application.
-StaticComponents/ Static pages and informational components.
-UserProfile/ User profile and subscription-related interface components.
-Home.jsx Home page component.
-Supporting Directories
-Directory Responsibility
-assets/ Images and other static resources.
-helpers/ Supporting functions for application workflows.
-hooks/ Custom React hooks for reusable stateful logic.
-utils/ Shared utility functions and application helpers.
-🔑 Authentication and Request Flow
+Directory Responsibilities
+File or Directory Responsibility
+api/ API communication and backend request workflows.
+api/apiRequests.js Centralized API request handling and response processing.
+api/articleApi.js Article-related API operations.
+api/authApi.js Authentication request parameters, token refresh, and request retries.
+api/authRequests.js Executes authentication requests directly against Supabase.
+api/catalogApi.js Technical category catalog operations.
+api/profileApi.js User profile and category subscription operations.
+assets/ Images and static resources.
+components/AuthComponents/ Authentication interface components.
+components/MainComponents/ Main application interface components.
+components/SharedComponents/ Reusable UI components.
+components/StaticComponents/ Static and informational components.
+components/UserProfile/ User profile and subscription interface components.
+components/Home.jsx Home page component.
+context/authContext.jsx Global authentication state and provider.
+helpers/ Supporting application functions.
+hooks/ Custom React hooks.
+utils/ Shared utility functions.
+App.jsx Root component and application routing.
+App.css Application-specific styling.
+index.css Global CSS rules.
+main.jsx React application entry point.
+🔑 Authentication and Session Management
 
 Authentication is managed through a dedicated API workflow and a global React authentication context.
 
 Authentication Responsibilities
-authContext.jsx maintains the application's current authentication state.
-authApi.js manages authentication request parameters, coordinates token refresh, and handles retrying requests when an access token expires.
-authRequests.js performs the underlying authentication requests directly against Supabase.
-apiRequests.js provides centralized handling for API requests and shared response processing.
+authContext.jsx maintains the current authentication state.
+authApi.js manages authentication request parameters, coordinates token refresh, and retries requests when an access token expires.
+authRequests.js executes the underlying authentication requests directly against Supabase.
+apiRequests.js centralizes API request handling and shared response processing.
 Token Refresh Workflow
 
 When an access token expires, the authentication workflow attempts to refresh the session before retrying the affected operation.
 
 flowchart TD
-A[Authentication Request]
+A[Request initiated]
 B[authApi.js]
-C{Access Token Valid?}
-D[Execute Request]
-E[Refresh Token]
-F{Refresh Successful?}
-G[Retry Original Operation]
-H[Clear Session]
-I[Update Authentication Context]
-J[Continue Application]
+C{Access token valid?}
+D[Execute request]
+E[Refresh token]
+F{Refresh successful?}
+G[Retry original request]
+H[Clear session]
+I[Update authentication context]
 
     A --> B
     B --> C
@@ -136,17 +123,14 @@ J[Continue Application]
     F -- Yes --> G
     F -- No --> H
     H --> I
-    I --> J
-    D --> J
-    G --> J
 
 The session_clear() utility removes stale session data from browser storage and updates the React authentication context. This allows navigation and user-dependent components to respond to changes in authentication state.
 
-The application also handles unauthorized responses through its centralized request infrastructure. Authentication failures and permission errors should be distinguished so that a 403 Forbidden response does not automatically invalidate an otherwise valid session.
+Unauthorized responses are handled through the centralized request infrastructure. HTTP 401 Unauthorized and 403 Forbidden responses are distinguished so that insufficient permissions do not automatically invalidate a valid session.
 
 🗄️ Database Schema
 
-The platform uses three primary tables in the Supabase PostgreSQL database:
+The platform uses three primary PostgreSQL tables in Supabase:
 
 public.profiles
 public.techs
@@ -161,7 +145,7 @@ id UUID Primary key linked to auth.users.id.
 email TEXT User email address.
 subscribed_categories UUID[] Identifiers of followed technical categories.
 
-Profile records are intended to be created and synchronized using a PostgreSQL trigger associated with Supabase Auth.
+Profile records are created and synchronized through a PostgreSQL trigger associated with Supabase Auth.
 
 2. public.techs
 
@@ -187,10 +171,10 @@ content TEXT Main documentation content.
 Data Relationships
 A user can subscribe to multiple categories.
 A category can contain multiple articles.
-Each article records its category and author.
-Category and article associations are maintained using the category's articles UUID array and the article's category field.
+Each article records its associated category and author.
+Category and article associations are maintained through the category's articles UUID array and the article's category field.
 
-Database design note: Because category membership is represented both by techs.articles and articles.category, these values must remain synchronized. PostgreSQL foreign-key constraints cannot directly enforce individual elements within a UUID array. A normalized junction table is an alternative if the project later requires stronger relational integrity.
+Database design note: Because category membership is represented both by techs.articles and articles.category, these values must remain synchronized. PostgreSQL foreign-key constraints cannot directly enforce individual elements inside a UUID array.
 
 ⚡ Core Functionality
 Dynamic Article Counts
@@ -203,7 +187,7 @@ This avoids a separate count request when the array already contains the relevan
 
 Category Subscriptions
 
-The application checks the authenticated user's subscribed_categories array to determine which categories are followed. Subscription indicators are displayed on the corresponding category cards.
+The application checks the authenticated user's subscribed_categories array to determine which categories are followed. Subscription indicators appear on the corresponding category cards.
 
 Article Management
 
@@ -214,7 +198,7 @@ Newly created article identifiers are added to the associated category.
 Editing and deletion controls are displayed according to article ownership.
 Deleted article identifiers are removed from the category's array.
 
-The interface uses the authenticated user's ID to check ownership before displaying author-specific controls.
+The interface checks the authenticated user's ID against the article author before displaying author-specific controls.
 
 Personalized Dashboard
 
@@ -222,11 +206,11 @@ The dashboard retrieves articles from followed categories using concurrent reque
 
 The dashboard provides two primary views:
 
-Live Feed: Articles from followed categories in chronological order.
-Category Directory: A grid displaying followed categories.
+Live Feed — Articles from followed categories in chronological order.
+Category Directory — A grid displaying followed categories.
 Responsive Navigation
 
-The interface uses responsive styling and navigation layouts to support different screen sizes, including mobile navigation and desktop layouts.
+The interface combines Tailwind CSS and custom CSS to support responsive navigation and layouts across desktop and mobile devices.
 
 Password Recovery Interface
 
@@ -237,14 +221,12 @@ The application includes a humorous, static password recovery interface with con
 The platform combines frontend authentication checks with database-level access policies.
 
 Route Protection
-
-Public routes include:
-
 Route Purpose
 /catalog Browse documentation categories.
 /catalog/:id View a category.
 /article/:id Read an article.
 /forgot-password Access the password recovery interface.
+/dashboard Protected user dashboard.
 
 - Display the fallback 404 page.
 
@@ -258,25 +240,24 @@ These checks improve the user experience but are not a replacement for backend a
 
 Row-Level Security (RLS)
 
-Supabase RLS policies should enforce the following intended permissions:
+Supabase RLS policies enforce database permissions independently of the frontend.
 
-Profiles: Users may modify their own permitted profile fields.
-Article creation: Authenticated users may create articles according to the applicable policy.
-Article updates and deletion: Only the original author may modify or delete an article, if that is the configured policy.
-Category operations: Category creation, updates, and deletion must follow explicitly defined authorization rules.
-Public reads: Public catalog and article access must follow the configured read policies.
+The intended permission model includes:
 
-Actual permissions depend on the SQL policies deployed in Supabase. RLS should be enabled and tested for every exposed table, including checks on both existing and proposed row values where appropriate.
+Profiles: Users can modify their own permitted profile fields.
+Article creation: Authenticated users can create articles when authorized by the applicable policy.
+Article updates and deletion: Only the original author can modify or delete an article, according to the configured policies.
+Category operations: Category creation, updates, and deletion follow explicitly defined authorization rules.
+Public reads: Catalog and article access follow the configured read policies.
+
+RLS policies must validate both the existing row and proposed row values where applicable. Frontend visibility checks alone cannot prevent unauthorized direct API requests.
 
 🚀 Getting Started
 Prerequisites
-
-Before running the application, make sure you have:
-
-Node.js installed.
-npm available in your terminal.
-A configured Supabase project.
-The required database tables, authentication settings, and RLS policies.
+Node.js
+npm
+A configured Supabase project
+The required database tables, authentication settings, and RLS policies
 
 1. Clone the Repository
    git clone <your-repository-url>
@@ -294,7 +275,7 @@ Create a .env file in the project root:
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_KEY=your-supabase-publishable-or-anon-key
 
-Replace both values with the credentials from your Supabase project.
+Replace the example values with the credentials from your Supabase project.
 
 Security considerations:
 
@@ -302,7 +283,7 @@ Use a Supabase publishable key or legacy anon key intended for browser applicati
 Never expose a Supabase service*role key or secret key in frontend code.
 Variables prefixed with VITE* are exposed in the client-side bundle.
 Configure RLS policies before making database tables accessible to the frontend.
-Ensure that the environment variable names match those referenced by the application code. 4. Start the Development Server
+Ensure the environment variable names match those referenced by the application code. 4. Start the Development Server
 npm run dev
 
 Vite will display the local development URL in the terminal. The default is commonly http://localhost:5173.
@@ -321,7 +302,7 @@ npm run preview
 The frontend can be deployed to a static hosting provider such as Vercel, while Supabase provides the database and authentication infrastructure.
 
 Deployment Checklist
-Configure the production environment variables.
+Configure production environment variables.
 Confirm that the Supabase database schema is deployed.
 Enable and verify the appropriate RLS policies.
 Configure SPA rewrites or fallback rules for client-side routes.
@@ -341,15 +322,12 @@ npm run preview Preview the production build locally.
 These commands assume the corresponding scripts are defined in package.json.
 
 🔮 Potential Improvements
-
-Possible future enhancements include:
-
-Replacing UUID arrays with normalized relational tables where appropriate.
-Adding article search, pagination, and server-side filtering.
-Introducing automated tests for authentication workflows and RLS policies.
-Adding continuous integration and automated deployment checks.
-Improving keyboard navigation and accessibility.
-Adding database indexes and query optimizations as the content collection grows.
+Replace UUID arrays with normalized relational tables where appropriate.
+Add article search, pagination, and server-side filtering.
+Introduce automated tests for authentication workflows and RLS policies.
+Add continuous integration and automated deployment checks.
+Improve keyboard navigation and accessibility.
+Add database indexes and query optimizations as the content collection grows.
 📄 License
 
 No license has been specified in this README. Add a LICENSE file and update this section when the project's distribution terms have been decided.
