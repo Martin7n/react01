@@ -19,9 +19,9 @@ export default async function apiCollectionRequests(
         const storedToken = localStorage.getItem("access_token");
         if (storedToken) {
             const user = await authApi.getUser(storedToken);
-            if (!result || result.success === false) {
+            if (!user || user.success === false) {
                 throw new Error(
-                    result?.message ||
+                    user?.message ||
                         "User profile authentication verification rejected.",
                 );
             }

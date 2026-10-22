@@ -1,16 +1,17 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import authApi from "../api/authApi";
 import session_clear from "../utils/session_clear";
+import { useLocation } from "react-router";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const location = useLocation();
 
     // Restore and validate the session when the app starts
     useEffect(() => {
-        
         const initializeAuth = async () => {
             try {
                 const accessToken = localStorage.getItem("access_token");
@@ -22,6 +23,8 @@ export function AuthProvider({ children }) {
                 const result = await authApi.getUser(accessToken);
 
                 if (!result.success) {
+                    setUser(null);
+
                     throw new Error("Could not validate user");
                 }
                 const userData = result.data;
@@ -49,7 +52,7 @@ export function AuthProvider({ children }) {
         };
 
         initializeAuth();
-    }, []);
+    }, [location.pathname]);
 
     // Save the session after successful login
     const loginUser = (sessionData) => {

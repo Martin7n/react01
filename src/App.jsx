@@ -16,8 +16,8 @@ function App() {
 
     return (
         <>
-            <AuthProvider>
-                <BrowserRouter>
+            <BrowserRouter>
+                <AuthProvider>
                     <Routes>
                         <Route element={<Layout />}>
                             <Route path="/" element={<Home />} />
@@ -32,8 +32,8 @@ function App() {
                             />
                         </Route>
                     </Routes>
-                </BrowserRouter>
-            </AuthProvider>
+                </AuthProvider>
+            </BrowserRouter>
         </>
     );
 }
