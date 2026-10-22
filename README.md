@@ -1,114 +1,66 @@
-#  SevenTech Node Platform
+# SevenTech Node Platform
 
 A high-performance, secure, and fully responsive documentation hub engineered as a decoupled single-page application (SPA) architecture utilizing **React (Vite)**, **Tailwind CSS**, and a **Supabase (PostgREST API)** backend.
 
-##  Live Production Deployment
-* **Frontend Hosting Layer:** [Vercel Deployment Pipeline](https://vercel.com)
-* **Secure Database Infrastructure:** [Supabase Cluster Nodes](https://supabase.com)
+## Live Production Deployment
+
+- **Frontend Hosting Layer:** [Vercel Deployment Pipeline](https://vercel.com)
+- **Secure Database Infrastructure:** [Supabase Cluster Nodes](https://supabase.com)
 
 ---
 
-##  System Architecture & Data Topology
+## System Architecture & Data Topology
 
 The application operates as an optimized SPA utilizing direct PostgREST collection filtering to minimize database query latency and eliminate redundant network joins.
 
 [ React Frontend Web UI ]
 │
 ├── (Bearer JWT Auth Headers) ──► [ Supabase PostgREST Engine ]
-│                                              │
+│ │
 └── (Public Schema Relation Reads) ◄───────────┼── [ Table: articles ]
 ├── [ Table: techs ]
 └── [ Table: profiles ]
 
 ### 1. Database Relational Entities Schema
 
-* **`public.profiles`**: Mapped directly to secure internal `auth.users` records using a real-time PostgreSQL database trigger. Tracks account emails and stores a dynamic array matrix of user subscription indicators (`subscribed_categories: uuid[]`).
-* **`public.techs` (Categories)**: Grouping node elements that store technical track titles, cover images, and a unified collection map array tracking child resource pointers (`articles: uuid[]`).
-* **`public.articles`**: Houses granular documentation copy text records linked to precise creator foreign keys (`article_author: uuid`).
+- **`public.profiles`**: Mapped directly to secure internal `auth.users` records using a real-time PostgreSQL database trigger. Tracks account emails and stores a dynamic array matrix of user subscription indicators (`subscribed_categories: uuid[]`).
+- **`public.techs` (Categories)**: Grouping node elements that store technical track titles, cover images, and a unified collection map array tracking child resource pointers (`articles: uuid[]`).
+- **`public.articles`**: Houses granular documentation copy text records linked to precise creator foreign keys (`article_author: uuid`).
 
 ---
 
 ## ⚡ Core Operational Features
 
-* **Proactive State Tracking Matrix**: Implements a self-healing frontend token evaluation cycle bound to active router parameter location shifts to instantly detect and handle expired user sessions on every page transition.
-* **Unified Event Sessions Cleanup**: A centralized `session_clear()` utility macro that forcefully purges stale authentication keys from `localStorage` and updates active React context memory layout hooks synchronously.
-* **Instant Client Density Metrics**: Computes article counters directly from the data string array attribute (`category.articles.length`), displaying real-time content density metrics on catalog grid cards with 0ms asynchronous server delay.
-* **Personalized Dashboard Stream**: Leverages concurrent execution loops (`Promise.all`) to gather multi-channel content records across all followed topics into a single, flattened, chronological timeline stream feed.
-* **Humorous Memory Mismatch Engine**: A lighthearted, static forgot-password wizard featuring progressive diagnostic troubleshooting tips and custom validation overrides to handle lost credentials natively.
-* **Responsive Fixed Navigation**: A fully accessible dark-themed global header layout utilizing **external CSS media queries** to manage mobile hamburger menu drawer transitions smoothly with zero viewport layout overlaps.
+- **Proactive State Tracking Matrix**: Implements a self-healing frontend token evaluation cycle bound to active router parameter location shifts to instantly detect and handle expired user sessions on every page transition.
+- **Unified Event Sessions Cleanup**: A centralized `session_clear()` utility macro that forcefully purges stale authentication keys from `localStorage` and updates active React context memory layout hooks synchronously.
+- **Instant Client Density Metrics**: Computes article counters directly from the data string array attribute (`category.articles.length`), displaying real-time content density metrics on catalog grid cards with 0ms asynchronous server delay.
+- **Personalized Dashboard Stream**: Leverages concurrent execution loops (`Promise.all`) to gather multi-channel content records across all followed topics into a single, flattened, chronological timeline stream feed.
+- **Humorous Memory Mismatch Engine**: A lighthearted, static forgot-password wizard featuring progressive diagnostic troubleshooting tips and custom validation overrides to handle lost credentials natively.
+- **Responsive Fixed Navigation**: A fully accessible dark-themed global header layout utilizing **external CSS media queries** to manage mobile hamburger menu drawer transitions smoothly with zero viewport layout overlaps.
 
 ---
 
-##  Production Security & Error Handling Matrix
+## Production Security & Error Handling Matrix
 
 The application implements comprehensive server-side access controls coupled with fail-safe network interceptors to guarantee structural safety on live environments.
 
 ### 1. Row-Level Security (RLS) Configuration
-* **Profiles Security Boundary**: Users hold exclusive permissions to patch (`UPDATE`) subscription parameters inside their own record row via verified ID tokens (`auth.uid() = id`).
-* **Multi-Author Collaboration Logic**: Any registered profile possesses the clearance to write brand new category tracks or contribute documentation data rows under their signature token.
-* **Airtight Content Boundaries**: Modifying (`UPDATE`) or purging (`DELETE`) existing category configurations or article text rows is restricted to the original creator (`auth.uid() = article_author`), preventing cross-user data tampering.
+
+- **Profiles Security Boundary**: Users hold exclusive permissions to patch (`UPDATE`) subscription parameters inside their own record row via verified ID tokens (`auth.uid() = id`).
+- **Multi-Author Collaboration Logic**: Any registered profile possesses the clearance to write brand new category tracks or contribute documentation data rows under their signature token.
+- **Airtight Content Boundaries**: Modifying (`UPDATE`) or purging (`DELETE`) existing category configurations or article text rows is restricted to the original creator (`auth.uid() = article_author`), preventing cross-user data tampering.
 
 ### 2. Network-Level Error Guards
-* **401/403 Security Interceptor**: Centralized handler inside `apiRequests.js` that catches unhandled credential expiration codes, forcefully clears the local disk cache, and bounces the browser to a custom `/unauthorized` fallback page.
-* **400 Bad Request Fallback Guard**: Intercepts fatal PostgreSQL UUID type compilation syntax issues (triggered when a user types random symbols into an article or category URL route path) and cleanly redirects the entire browser tab over to a terminal-themed `/not-found` 404 canvas screen.
+
+- **401/403 Security Interceptor**: Centralized handler inside `apiRequests.js` that catches unhandled credential expiration codes, forcefully clears the local disk cache, and bounces the browser to a custom `/unauthorized` fallback page.
+- **400 Bad Request Fallback Guard**: Intercepts fatal PostgreSQL UUID type compilation syntax issues (triggered when a user types random symbols into an article or category URL route path) and cleanly redirects the entire browser tab over to a terminal-themed `/not-found` 404 canvas screen.
 
 ---
 
-## ⚙️ Environment Parameters Installation
+### Additional Information:
 
-To launch the project workspace locally, establish a `.env` file within the core layout root path:
+## Project Structure and Directory Responsibilities
 
-```env
-VITE_SUPABASE_URL=https://supabase.co
-VITE_SUPABASE_KEY=your-public-anon-key-string
-```
-
-### Script Execution Commands:
-```bash
-# Install core package dependencies
-npm install
-
-# Launch local hot-module development server
-npm run dev
-
-# Compile optimized static production build pipeline variables
-npm run build
-```
-
-### Addutional Information:
-
-## Project Structure
-📁 
-src/
-├── api/
-│   ├── apiRequests.js
-│   ├── articleApi.js
-│   ├── authApi.js
-│   ├── authRequests.js
-│   ├── catalogApi.js
-│   └── profileApi.js
-├── assets/
-├── components/
-│   ├── AuthComponents/
-│   ├── MainComponents/
-│   ├── SharedComponents/
-│   ├── StaticComponents/
-│   ├── UserProfile/
-│   └── Home.jsx
-├── context/
-│   └── authContext.jsx
-├── helpers/
-├── hooks/
-├── utils/
-├── App.css
-├── App.jsx
-├── index.css
-└── main.jsx
-
-
-
-
-## Directory Responsibilities
     File or Directory	Responsibility
     api/	API communication and backend request workflows.
     api/apiRequests.js	Centralized API request handling and response processing.
@@ -133,7 +85,7 @@ src/
     index.css	Global CSS rules.
     main.jsx	React application entry point.
 
- ### Authentication and Session Management
+### Authentication and Session Management
 
 ##### Authentication is managed through a dedicated API workflow and a global React authentication context.
 
@@ -143,8 +95,6 @@ src/
     authRequests.js executes the underlying authentication requests directly against Supabase.
     apiRequests.js centralizes API request handling and shared response processing.
 
-
-
 ##### Token Refresh Workflow
 
 When an access token expires, the authentication workflow attempts to refresh the session before retrying the affected operation.
@@ -153,10 +103,8 @@ The session_clear() utility removes stale session data from browser storage and 
 
 Unauthorized responses are handled through the centralized request infrastructure. HTTP 401 Unauthorized and 403 Forbidden responses are distinguished so that insufficient permissions do not automatically invalidate a valid session.
 
-
-
-
 ### Script Execution Commands:
+
     Prerequisites
     Node.js
     npm
@@ -204,3 +152,5 @@ Unauthorized responses are handled through the centralized request infrastructur
     To preview the production build locally:
 
     npm run preview
+
+    
