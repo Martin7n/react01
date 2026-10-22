@@ -8,22 +8,18 @@ export default function Navigation() {
 
     return (
         <>
-            {/* Top Fixed Dark Header */}
             <nav className="bg-neutral-900 fixed w-full z-20 top-0 start-0 border-b border-neutral-800 shadow-md">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    {/* Logo Brand Link with Inline Sports Number 7 SVG */}
                     <Link
                         to="/"
                         className="flex items-center space-x-3 rtl:space-x-reverse group"
                     >
-                        {/* Custom  Logo SVG */}
                         <svg
                             className="h-9 w-9 text-blue-500 group-hover:text-blue-400 transition-colors"
                             viewBox="0 0 100 100"
                             fill="none"
                             xmlns="http://w3.org"
                         >
-                            {/* Athletic Crest / Shield Backdrop */}
                             <path
                                 d="M50 5L85 20V55C85 76.5 50 95 50 95C50 95 15 76.5 15 55V20L50 5Z"
                                 fill="currentColor"
@@ -81,7 +77,6 @@ export default function Navigation() {
                         </svg>
                     </button>
 
-                    {/* Nav Menu Block */}
                     <div className="hidden md:block w-full md:w-auto" id="menu">
                         <nav className="w-full bg-neutral-900 md:bg-transparent rounded px-6 py-4 mt-4 text-center md:p-0 md:mt-0 md:shadow-none">
                             <ul className="md:flex items-center">
@@ -116,12 +111,18 @@ export default function Navigation() {
                                     </>
                                 ) : (
                                     <>
-                                        {/* Render only when active user is successfully logged in */}
                                         <li className="md:ml-5 text-sm text-blue-400 font-semibold tracking-wide cursor-default self-center">
                                             Logged in as:{" "}
                                             <span className="text-white font-mono">
-                                                {user?.email}
+                                                {user?.email}{" "}
                                             </span>
+                                            {user ? (
+                                                <Link to="/dashboard">
+                                                    Dashboard
+                                                </Link>
+                                            ) : (
+                                                <></>
+                                            )}
                                         </li>
                                         <li className="md:ml-5">
                                             <Link

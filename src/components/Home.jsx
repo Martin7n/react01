@@ -25,9 +25,8 @@ export default function Home() {
                         </h1>
 
                         <p className="mt-6 max-w-xl text-lg leading-8 text-slate-400">
-                            Discover upcoming events, follow your favorite
-                            teams, and join the conversation with other sports
-                            fans.
+                            Discover tech news events, follow your favorite
+                            topics.
                         </p>
 
                         <div
@@ -37,7 +36,7 @@ export default function Home() {
                                 to="/catalog"
                                 className="rounded-lg bg-blue-600 px-5 py-3 font-semibold transition hover:bg-blue-500"
                             >
-                                Explore events
+                                Explore categories
                             </Link>
 
                             {!user && (

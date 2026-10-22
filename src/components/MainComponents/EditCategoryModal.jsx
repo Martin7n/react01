@@ -29,7 +29,6 @@ export default function EditCategoryModal({
         }
 
         try {
-            // Passes updated values back alongside the target identifier
             await onEditSuccess(category.id, { name, description, imgUrl });
             onClose();
         } catch (err) {
@@ -55,7 +54,6 @@ export default function EditCategoryModal({
                     </button>
                 </div>
 
-                {/* Form Component Container */}
                 <form action={handleFormAction} className="space-y-4">
                     {actionError && (
                         <div className="p-3 text-sm text-red-400 bg-red-950/50 border border-red-900 rounded-lg font-medium">

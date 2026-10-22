@@ -8,6 +8,7 @@ export default function ArticleModal({
 }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [actionError, setActionError] = useState(null);
+    
 
     const handleFormAction = async (formData) => {
         setActionError(null);
@@ -15,6 +16,7 @@ export default function ArticleModal({
 
         const content = formData.get("content")?.trim() || "";
         const imgUrl = formData.get("imgUrl")?.trim() || "";
+        const title = formData.get("title")?.trim() || "";
 
         if (content.length < 5) {
             setActionError(
@@ -23,12 +25,19 @@ export default function ArticleModal({
             setIsSubmitting(false);
             return;
         }
+        if (title.length < 3) {
+            setActionError(
+                "Please provide an article title with at least 3 characters.",
+            );
+            setIsSubmitting(false);
+            return;
+        }
 
         try {
             if (mode === "edit") {
-                await onSubmit(article.id, { content, imgUrl });
+                await onSubmit(article.id, { content, imgUrl, title });
             } else {
-                await onSubmit({ content, imgUrl });
+                await onSubmit({ content, imgUrl, title });
             }
             onClose();
         } catch (err) {
@@ -68,11 +77,29 @@ export default function ArticleModal({
 
                     <div>
                         <label
+                            htmlFor="title"
+                            className="block mb-1 text-sm font-medium text-gray-300"
+                        >
+                            Title
+                        </label>
+                        <input
+                            type="text"
+                            name="title"
+                            id="title"
+                            defaultValue={mode === "edit" ? article?.title : ""}
+                            disabled={isSubmitting}
+                            className="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        />
+                    </div>
+
+                    <div>
+                        <label
                             htmlFor="content"
                             className="block mb-1 text-sm font-medium text-gray-300"
                         >
                             Article Body Content
                         </label>
+
                         <textarea
                             name="content"
                             id="content"

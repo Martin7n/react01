@@ -64,7 +64,7 @@ export default function Footer() {
             sm:flex-row sm:items-center sm:justify-between"
                 >
                     <p>© {new Date().getFullYear()} Student Project</p>
-                    <p>Built with curiosity.</p>
+                    <p>Built with curiosity and a lot of spaghetti.</p>
                 </div>
             </div>
         </footer>

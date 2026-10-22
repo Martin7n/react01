@@ -3,15 +3,17 @@ import apiCollectionRequests from "./apiRequests";
 const baseURL = `${import.meta.env.VITE_SUPABASE_URL}/rest/v1`;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY;
 
-
-
-
-
-
-
 const articleApi = {
+    getOneArticle(id) {
+        return apiCollectionRequests(
+            `articles?id=eq.${id}&select=*`,
+            "GET",
+            {},
+            "Load Article",
+        );
+    },
+
     getAll(categoryId) {
-       
         return apiCollectionRequests(
             `articles?category=eq.${categoryId}`,
             "GET",

@@ -10,6 +10,11 @@ import Logout from "./components/AuthComponents/Logout";
 import Layout from "./components/SharedComponents/Layout";
 import { AuthProvider } from "./context/authContext";
 import CategoryPage from "./components/MainComponents/CategoryPage";
+import ArticleRead from "./components/MainComponents/Articles/ArticleRead";
+import Forgoten from "./components/StaticComponents/Forgoten";
+import NotFound from "./components/StaticComponents/404";
+import ProtectedRoute from "./components/SharedComponents/ProtectedRoute";
+import Dashboard from "./components/UserProfile/Dashboard";
 
 function App() {
     const [count, setCount] = useState(0);
@@ -24,13 +29,28 @@ function App() {
                             <Route path="/about" element={<About />} />
                             <Route path="/register" element={<Register />} />
                             <Route path="/login" element={<Login />} />
+                            <Route path="/forgotten" element={<Forgoten />} />
                             <Route path="/logout" element={<Logout />} />
                             <Route path="/catalog" element={<Catalog />} />
+                            <Route
+                                path="/dashboard"
+                                element={
+                                    <ProtectedRoute>
+                                        <Dashboard />
+                                    </ProtectedRoute>
+                                }
+                            />
+
                             <Route
                                 path="/catalog/:id"
                                 element={<CategoryPage />}
                             />
+                            <Route
+                                path="/article/:id"
+                                element={<ArticleRead />}
+                            />
                         </Route>
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </AuthProvider>
             </BrowserRouter>

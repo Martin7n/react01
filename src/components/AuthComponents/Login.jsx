@@ -5,10 +5,6 @@ import login_cleaner from "../../helpers/login_cleaner";
 import { useAuth } from "../../context/authContext";
 
 export default function Login() {
-    // const [state, setState] = React.useState("login");
-    // const [name, setName] = React.useState("");
-    // const [email, setEmail] = React.useState("");
-    // const [password, setPassword] = React.useState("");
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -54,8 +50,6 @@ export default function Login() {
 
     return (
         <>
-            <h1>Login</h1>
-
             <section className="bg-gray-50 dark:bg-black">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -64,14 +58,12 @@ export default function Login() {
                                 to="/"
                                 className="flex items-center space-x-3 rtl:space-x-reverse group bg-black"
                             >
-                                {/* Custom  Logo SVG */}
                                 <svg
                                     className="h-9 w-9 text-blue-500 group-hover:text-blue-400 transition-colors"
                                     viewBox="0 0 100 100"
                                     fill="none"
                                     xmlns="http://w3.org"
                                 >
-                                    {/* Athletic Crest / Shield Backdrop */}
                                     <path
                                         d="M50 5L85 20V55C85 76.5 50 95 50 95C50 95 15 76.5 15 55V20L50 5Z"
                                         fill="currentColor"
@@ -80,14 +72,12 @@ export default function Login() {
                                         strokeWidth="4"
                                         strokeLinejoin="round"
                                     />
-                                    {/* Dynamic Lightning Accent */}
                                     <path
                                         d="M15 20L50 5L85 20"
                                         stroke="#ffffff"
                                         strokeWidth="3"
                                         strokeLinecap="round"
                                     />
-                                    {/* Bold Athletic Number 7 */}
                                     <path
                                         d="M35 32H65L45 72"
                                         stroke="#ffffff"
@@ -111,7 +101,7 @@ export default function Login() {
                             >
                                 {formError && (
                                     <div className="p-3 text-sm text-red-800 bg-red-50 rounded-lg dark:bg-gray-700 dark:text-red-400 font-medium">
-                                        ⚠️ {formError}
+                                        {formError}
                                     </div>
                                 )}
                                 <div>
@@ -166,12 +156,12 @@ export default function Login() {
                                             </label>
                                         </div>
                                     </div>
-                                    <a
-                                        href="#"
+                                    <Link
+                                        to="/forgotten"
                                         className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                                     >
                                         Forgot password?
-                                    </a>
+                                    </Link>
                                 </div>
                                 <button
                                     disabled={isSubmitting}

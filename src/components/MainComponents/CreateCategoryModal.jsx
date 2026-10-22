@@ -1,7 +1,7 @@
 import { useState } from "react";
 import categoryApi from "../../api/catalogApi";
 
-export default function CreateCategoryModal({ onClose, onCreateSuccess }) {
+export default function CreateCategoryModal({ onClose, onSubmit }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [actionError, setActionError] = useState(null);
     const [dataError, setDataError] = useState(false);
@@ -29,7 +29,7 @@ export default function CreateCategoryModal({ onClose, onCreateSuccess }) {
         }
 
         try {
-            await onCreateSuccess({ name, description, imgUrl });
+            await onSubmit({ name, description, imgUrl });
             onClose();
         } catch (err) {
             setActionError(err.message || "Failed to create category row.");
@@ -41,7 +41,6 @@ export default function CreateCategoryModal({ onClose, onCreateSuccess }) {
         <>
             <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
                 <div className="bg-gray-800 border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl p-6 relative flex flex-col text-white">
-                    {/* Header Container */}
                     <div className="flex justify-between items-center border-b border-gray-700 pb-3 mb-4">
                         <h3 className="text-xl font-bold tracking-tight">
                             Create New Category
@@ -55,11 +54,10 @@ export default function CreateCategoryModal({ onClose, onCreateSuccess }) {
                         </button>
                     </div>
 
-                    {/* Form Component Container */}
                     <form action={handleFormAction} className="space-y-4">
                         {actionError && (
                             <div className="p-3 text-sm text-red-400 bg-red-950/50 border border-red-900 rounded-lg font-medium">
-                                ⚠️ {actionError}
+                                {actionError}
                             </div>
                         )}
 

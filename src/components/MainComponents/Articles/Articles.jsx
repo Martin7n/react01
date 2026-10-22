@@ -112,10 +112,11 @@
 // }
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import articleApi from "../../api/articleApi";
-import { useAuth } from "../../context/authContext";
+import { useNavigate, useParams } from "react-router";
+import articleApi from "../../../api/articleApi";
+import { useAuth } from "../../../context/authContext";
 import ArticleModal from "./ArticleModal"; // Imported modal above
+import categoryApi from "../../../api/catalogApi";
 
 export default function Articles({ category }) {
     const { id: urlParamId } = useParams();
@@ -125,7 +126,7 @@ export default function Articles({ category }) {
     const [articles, setArticles] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const navigate = useNavigate();
     // Modal Control States
     const [modalState, setModalState] = useState({
         isOpen: false,
@@ -157,16 +158,114 @@ export default function Articles({ category }) {
         };
     }, [categoryId]);
 
-    // CREATE SUBMIT HANDLER
+    // const handleCreateArticleSubmit = async (fields) => {
+    //     try {
+    //         const payload = {
+    //             ...fields,
+    //             category: categoryId,
+    //             article_author: user?.id, // Explicitly binds active user id parameter as author field
+    //         };
+    //         const result = await articleApi.createOne(payload);
+    //         if (result && result.success) {
+    //             await loadArticles();
+    //             setModalState({
+    //                 isOpen: false,
+    //                 mode: "create",
+    //                 currentArticle: null,
+    //             });
+    //         }
+    //     } catch (err) {
+    //         console.error("Failed creating dynamic article node:", err.message);
+    //         throw new Error(
+    //             err.message || "Failed to persist article metadata row.",
+    //         );
+    //     }
+    // };
+
+    // const handleEditArticleSubmit = async (articleId, fields) => {
+    //     try {
+    //         const result = await articleApi.editOne(articleId, fields);
+    //         if (result && result.success) {
+    //             await loadArticles();
+    //             setModalState({
+    //                 isOpen: false,
+    //                 mode: "create",
+    //                 currentArticle: null,
+    //             });
+    //         }
+    //     } catch (err) {
+    //         console.error(
+    //             "Failed altering target article node record:",
+    //             err.message,
+    //         );
+    //         throw new Error(
+    //             err.message || "Failed to process mutation update matrix.",
+    //         );
+    //     }
+    // };
+
+    // // DELETE RESTRUCTURING HANDLER
+    // const handleDeleteArticle = async (articleId) => {
+    //     if (
+    //         !window.confirm(
+    //             "Are you sure you want to permanently delete this article element?",
+    //         )
+    //     )
+    //         return;
+    //     try {
+    //         const result = await articleApi.deleteOne(articleId);
+    //         if (result && result.success) {
+    //             setArticles((prev) =>
+    //                 prev.filter((art) => art.id !== articleId),
+    //             );
+    //             alert("Article record successfully purged.");
+    //         }
+    //     } catch (err) {
+    //         console.error("Failed removing article database row:", err.message);
+    //         alert(err.message || "Failed to delete article row on server.");
+    //     }
+    // };
+
     const handleCreateArticleSubmit = async (fields) => {
         try {
+            // 1. Persist the article row
             const payload = {
                 ...fields,
                 category: categoryId,
-                article_author: user?.id, // Explicitly binds active user id parameter as author field
+                article_author: user?.id,
             };
             const result = await articleApi.createOne(payload);
+
             if (result && result.success) {
+                const newArticleId =
+                    result.data && result.data.length > 0
+                        ? result.data[0].id
+                        : null;
+
+                if (newArticleId) {
+                    // 2. Fetch the target category to read its current articles array state
+                    const catResult = await categoryApi.getOne(categoryId);
+                    if (catResult && catResult.success) {
+                        const activeCategory =
+                            catResult.data && catResult.data.length > 0
+                                ? catResult.data[0]
+                                : null;
+                        const currentArticleIds =
+                            activeCategory?.articles || [];
+
+                        // 3. Append the new ID and convert to Postgres array string format "{id1,id2}"
+                        const updatedArticleIds = [
+                            ...currentArticleIds,
+                            newArticleId,
+                        ];
+                        const postgresArrayString = `{${updatedArticleIds.join(",")}}`;
+
+                        await categoryApi.editOne(categoryId, {
+                            articles: postgresArrayString,
+                        });
+                    }
+                }
+
                 await loadArticles();
                 setModalState({
                     isOpen: false,
@@ -182,7 +281,6 @@ export default function Articles({ category }) {
         }
     };
 
-    // UPDATE EDIT SUBMIT HANDLER
     const handleEditArticleSubmit = async (articleId, fields) => {
         try {
             const result = await articleApi.editOne(articleId, fields);
@@ -205,17 +303,44 @@ export default function Articles({ category }) {
         }
     };
 
-    // DELETE RESTRUCTURING HANDLER
+    // FULLY RESTRUCTURED DELETE HANDLER
     const handleDeleteArticle = async (articleId) => {
         if (
             !window.confirm(
                 "Are you sure you want to permanently delete this article element?",
             )
-        )
+        ) {
             return;
+        }
+
         try {
+            // 1. Purge the article row from the database
             const result = await articleApi.deleteOne(articleId);
+
             if (result && result.success) {
+                // 2. Fetch the target category to inspect its current articles array state
+                const catResult = await categoryApi.getOne(categoryId);
+
+                if (catResult && catResult.success) {
+                    const activeCategory =
+                        catResult.data && catResult.data.length > 0
+                            ? catResult.data[0]
+                            : null;
+                    const currentArticleIds = activeCategory?.articles || [];
+
+                    // 3. Filter out the deleted ID from the collection array matrix
+                    const filteredArticleIds = currentArticleIds.filter(
+                        (id) => String(id) !== String(articleId),
+                    );
+                    const postgresArrayString = `{${filteredArticleIds.join(",")}}`;
+
+                    // 4. Push the filtered array clean back onto the parent techs record row
+                    await categoryApi.editOne(categoryId, {
+                        articles: postgresArrayString,
+                    });
+                }
+
+                // 5. Synchronize local render views immediately
                 setArticles((prev) =>
                     prev.filter((art) => art.id !== articleId),
                 );
@@ -294,7 +419,8 @@ export default function Articles({ category }) {
                                     </div>
 
                                     <h3 className="text-sm font-mono text-blue-400 truncate">
-                                        Resource Node #{item.idx ?? "Item"}
+                                        {/* Resource Node #{item.idx ?? "Item"} */}
+                                        Title# {item.title ?? "Item"}
                                     </h3>
 
                                     <p className="text-gray-300 text-sm mt-3 line-clamp-4 leading-relaxed font-sans">
@@ -332,7 +458,13 @@ export default function Articles({ category }) {
                                         <div /> /* Invisible spacer to push main button style parameters right uniformly */
                                     )}
 
-                                    <button className="bg-neutral-900 hover:bg-black text-gray-300 text-xs px-3 py-1.5 rounded-lg font-medium transition cursor-pointer">
+                                    <button
+                                        onClick={() =>
+                                            navigate(`/article/${item.id}`)
+                                        }
+                                        className="w-full bg-blue-600 hover:bg-blue-500 active:scale-98 text-white py-2 rounded-lg font-semibold text-sm shadow transition cursor-pointer text-center"
+                                    >
+                                        {" "}
                                         Read More
                                     </button>
                                 </div>
