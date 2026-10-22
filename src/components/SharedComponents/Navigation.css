@@ -1,0 +1,35 @@
+.mobile-menu-wrapper {
+    display: none !important;
+    width: 100% !important;
+    background-color: #171717 !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid #262626 !important;
+    margin-top: 1rem !important;
+    padding: 0.1zrem !important;
+}
+
+.mobile-menu-wrapper.is-open {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+@media (min-width: 768px) {
+    .mobile-menu-wrapper {
+        display: block !important;
+        width: auto !important;
+        background-color: transparent !important;
+        border: none !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .mobile-menu-wrapper.is-open {
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+        max-height: calc(100vh - 90px);
+        overflow-y: auto; /* Adds safe inner scrolling if your menu is long */
+    }
+}

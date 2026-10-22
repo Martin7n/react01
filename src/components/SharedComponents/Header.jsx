@@ -4,11 +4,8 @@ import Navigation from "./Navigation";
 export default function Header() {
     return (
         <>
-            <header className="absolute top-0 left-0 w-full z-50 px-4 sm:px-8 lg:px-16 xl:px-40 2xl:px-64">
-                <div
-                    className="hidden md:flex justify-between items-center py-2 border-b text-sm py-3"
-                    style={{ borderColor: "rgba(255,255,255,.25)" }}
-                >
+            <header className="fixed top-0 left-0 w-full z-50 px-4 sm:px-8 lg:px-16 xl:px-40 2xl:px-64 bg-neutral-900/90 backdrop-blur-md border-b border-neutral-800/60 shadow-md">
+                <div className="w-full max-w-screen-xl mx-auto py-1 flex items-center justify-between">
                     <Navigation />
                 </div>
 

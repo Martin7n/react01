@@ -1,6 +1,5 @@
 import Footer from "./Footer";
 import { Outlet } from "react-router";
-import Navigation from "./Navigation";
 import Header from "./Header";
 
 export default function Layout() {

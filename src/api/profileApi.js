@@ -14,6 +14,7 @@ const profileApi = {
     },
     updateSubscriptions(userId, subscribedCategoriesArray) {
         const postgresArrayString = `{${subscribedCategoriesArray.join(",")}}`;
+        console.log(postgresArrayString);
 
         return apiCollectionRequests(
             `profiles?id=eq.${userId}`,

@@ -1,157 +1,183 @@
-import { Link } from "react-router";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../context/authContext";
+import "./Navigation.css";
 
 export default function Navigation() {
     const { user } = useAuth();
+    const navigate = useNavigate();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // console.log(user?.data);
+    const handleLinkClick = (targetPath) => {
+        setIsMenuOpen(false);
+        navigate(targetPath);
+    };
 
     return (
-        <>
-            <nav className="bg-neutral-900 fixed w-full z-20 top-0 start-0 border-b border-neutral-800 shadow-md">
-                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <Link
-                        to="/"
-                        className="flex items-center space-x-3 rtl:space-x-reverse group"
+        <nav className="bg-neutral-900 fixed w-full z-50 top-0 start-0 border-b border-neutral-800 shadow-md select-none">
+            <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-neutral-900 relative">
+                <button
+                    onClick={() => handleLinkClick("/")}
+                    className="flex items-center space-x-3 group cursor-pointer bg-transparent border-0 focus:outline-none"
+                >
+                    <svg
+                        className="h-9 w-9 text-blue-500 group-hover:text-blue-400 transition-colors pointer-events-none"
+                        viewBox="0 0 100 100"
+                        fill="none"
                     >
-                        <svg
-                            className="h-9 w-9 text-blue-500 group-hover:text-blue-400 transition-colors"
-                            viewBox="0 0 100 100"
-                            fill="none"
-                            xmlns="http://w3.org"
-                        >
-                            <path
-                                d="M50 5L85 20V55C85 76.5 50 95 50 95C50 95 15 76.5 15 55V20L50 5Z"
-                                fill="currentColor"
-                                fillOpacity="0.1"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                                strokeLinejoin="round"
-                            />
-                            {/* Dynamic Lightning Accent */}
-                            <path
-                                d="M15 20L50 5L85 20"
-                                stroke="#ffffff"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                            />
-                            {/* Bold Athletic Number 7 */}
-                            <path
-                                d="M35 32H65L45 72"
-                                stroke="#ffffff"
-                                strokeWidth="10"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                        </svg>
+                        <path
+                            d="M50 5L85 20V55C85 76.5 50 95 50 95C50 95 15 76.5 15 55V20L50 5Z"
+                            fill="currentColor"
+                            fillOpacity="0.1"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M15 20L50 5L85 20"
+                            stroke="#ffffff"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                        />
+                        <path
+                            d="M35 32H65L45 72"
+                            stroke="#ffffff"
+                            strokeWidth="10"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                    <span className="self-center text-xl text-white font-black tracking-wider uppercase font-mono pointer-events-none">
+                        Seven <span className="text-blue-500">Tech</span>
+                    </span>
+                </button>
 
-                        <span className="self-center text-xl text-white font-black tracking-wider uppercase font-mono">
-                            Seven <span className="text-blue-500">Tech</span>
-                        </span>
-                    </Link>
-
-                    {/* Mobile Hamburger Toggle Button */}
-                    <button
-                        data-collapse-toggle="menu"
-                        type="button"
-                        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-neutral-400 rounded-lg md:hidden hover:bg-neutral-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-neutral-700"
-                        aria-controls="menu"
-                        aria-expanded="false"
-                    >
-                        <span className="sr-only">Open main menu</span>
+                <div
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // console.log(
+                        //     "External CSS  Caught! State shifting to:",
+                        //     !isMenuOpen,
+                        // );
+                        setIsMenuOpen((prev) => !prev);
+                    }}
+                    className="md:hidden flex items-center justify-center w-12 h-12 rounded-xl bg-neutral-800 border border-neutral-700 cursor-pointer pointer-events-auto relative z-50 select-none touch-none"
+                >
+                    {isMenuOpen ? (
                         <svg
-                            className="w-6 h-6"
-                            aria-hidden="true"
-                            xmlns="http://w3.org"
-                            width="24"
-                            height="24"
+                            className="w-6 h-6 pointer-events-none text-white"
                             fill="none"
                             viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
                         >
                             <path
-                                stroke="currentColor"
                                 strokeLinecap="round"
-                                strokeWidth="2"
-                                d="M5 7h14M5 12h14M5 17h14"
+                                strokeLinejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
                             />
                         </svg>
-                    </button>
-
-                    <div className="hidden md:block w-full md:w-auto" id="menu">
-                        <nav className="w-full bg-neutral-900 md:bg-transparent rounded px-6 py-4 mt-4 text-center md:p-0 md:mt-0 md:shadow-none">
-                            <ul className="md:flex items-center">
-                                {/* Catalog Action Button */}
-                                <li className="md:ml-6 mt-3 md:mt-0">
-                                    <Link
-                                        to="/catalog"
-                                        className="inline-block font-semibold px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 border border-transparent rounded-lg shadow transition-all duration-200"
-                                    >
-                                        Catalog
-                                    </Link>
-                                </li>
-                                {!user ? (
-                                    <>
-                                        {/* Render only when guest visitor is logged out */}
-                                        <li className="md:ml-5">
-                                            <Link
-                                                to="/login"
-                                                className="py-2 inline-block text-neutral-300 hover:text-white md:px-2 font-medium transition-colors"
-                                            >
-                                                Login
-                                            </Link>
-                                        </li>
-                                        <li className="md:ml-5">
-                                            <Link
-                                                to="/register"
-                                                className="py-2 inline-block text-neutral-300 hover:text-white md:px-2 font-medium transition-colors"
-                                            >
-                                                Register
-                                            </Link>
-                                        </li>
-                                    </>
-                                ) : (
-                                    <>
-                                        <li className="md:ml-5 text-sm text-blue-400 font-semibold tracking-wide cursor-default self-center">
-                                            Logged in as:{" "}
-                                            <span className="text-white font-mono">
-                                                {user?.email}{" "}
-                                            </span>
-                                            {user ? (
-                                                <Link to="/dashboard">
-                                                    Dashboard
-                                                </Link>
-                                            ) : (
-                                                <></>
-                                            )}
-                                        </li>
-                                        <li className="md:ml-5">
-                                            <Link
-                                                to="/logout"
-                                                className="py-2 inline-block text-neutral-300 hover:text-red-400 md:px-2 font-medium transition-colors"
-                                            >
-                                                Logout
-                                            </Link>
-                                        </li>
-                                    </>
-                                )}
-
-                                <li>
-                                    {/* <Link
-                                        to="/about"
-                                        className="py-2 inline-block text-neutral-100 hover:text-blue md:hidden lg:block font-medium transition-colors"
-                                    > */}
-                                    <Link
-                                        to="/about"
-                                        className="inline-block py-2 text-white hover:text-yellow-200 md:hidden lg:block font-medium transition-colors duration-200"
-                                    >
-                                        About Project
-                                    </Link>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                    ) : (
+                        <svg
+                            className="w-6 h-6 pointer-events-none text-blue-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M4 6h16M4 12h16M4 18h16"
+                            />
+                        </svg>
+                    )}
                 </div>
-            </nav>
-        </>
+
+                <div
+                    className={`mobile-menu-wrapper ${isMenuOpen ? "is-open" : ""}`}
+                    id="menu"
+                >
+                    <ul className="w-full flex flex-col md:flex-row items-center gap-4 md:gap-0 bg-transparent text-white font-sans">
+                        <li className="md:ml-6 w-full md:w-auto">
+                            <button
+                                onClick={() => handleLinkClick("/catalog")}
+                                className="inline-block w-full md:w-auto text-center font-bold px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md transition cursor-pointer text-sm"
+                            >
+                                Catalog
+                            </button>
+                        </li>
+
+                        {!user ? (
+                            <>
+                                <li className="md:ml-5 w-full md:w-auto text-center">
+                                    <button
+                                        onClick={() =>
+                                            handleLinkClick("/login")
+                                        }
+                                        className="py-2 w-full md:w-auto text-neutral-300 hover:text-white font-medium transition-colors text-sm cursor-pointer"
+                                    >
+                                        Login
+                                    </button>
+                                </li>
+                                <li className="md:ml-5 w-full md:w-auto text-center">
+                                    <button
+                                        onClick={() =>
+                                            handleLinkClick("/register")
+                                        }
+                                        className="py-2 w-full md:w-auto text-neutral-300 hover:text-white font-medium transition-colors text-sm cursor-pointer"
+                                    >
+                                        Register
+                                    </button>
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                <li className="md:ml-5 text-xs text-blue-400 font-semibold tracking-wide cursor-default flex flex-col md:flex-row items-center gap-2 py-2 md:py-0">
+                                    <span>
+                                        Logged in as:{" "}
+                                        <span className="text-white font-mono">
+                                            {user.email}
+                                        </span>
+                                    </span>
+                                    <span className="hidden md:inline text-neutral-600">
+                                        |
+                                    </span>
+                                    <button
+                                        onClick={() =>
+                                            handleLinkClick("/dashboard")
+                                        }
+                                        className="text-blue-500 hover:text-blue-400 underline transition font-bold text-xs cursor-pointer"
+                                    >
+                                        Dashboard
+                                    </button>
+                                </li>
+
+                                <li className="md:ml-5 w-full md:w-auto text-center">
+                                    <button
+                                        onClick={() =>
+                                            handleLinkClick("/logout")
+                                        }
+                                        className="py-2 w-full md:w-auto text-neutral-300 hover:text-red-400 font-medium transition-colors text-sm cursor-pointer"
+                                    >
+                                        Logout
+                                    </button>
+                                </li>
+                            </>
+                        )}
+
+                        <li className="md:ml-5 w-full md:w-auto text-center border-t border-gray-800/40 md:border-0 pt-2 md:pt-0">
+                            <button
+                                onClick={() => handleLinkClick("/about")}
+                                className="inline-block py-2 text-white hover:text-yellow-200 font-medium transition duration-200 text-sm cursor-pointer"
+                            >
+                                About Project
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     );
 }
