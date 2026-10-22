@@ -55,6 +55,15 @@ export default async function apiCollectionRequests(
         ...options,
     });
 
+    if (response.status === 400) {
+        console.warn(
+            `[${action}] Intercepted a 400 Bad Request (Malformed UUID parameters). Shifting to 404 fallback...`,
+        );
+
+        window.location.href = "/not-found";
+        return { success: false, error: "MALFORMED_UUID_FORMAT" };
+    }
+
     if (!response.ok) {
         throw new Error(
             `${action} failed, verbously: ${response.status}, ${response.statusText}`,

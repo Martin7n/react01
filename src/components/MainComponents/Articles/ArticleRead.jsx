@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import articleApi from "../../../api/articleApi";
 import profileApi from "../../../api/profileApi";
 
@@ -9,6 +9,7 @@ export default function ArticleRead() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [authorEmail, setAuthorEmail] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         let isMounted = true;
@@ -17,7 +18,6 @@ export default function ArticleRead() {
 
         async function fetchArticleAndAuthor() {
             try {
-                // 1. Fetch the simple article record (No complex joins that cause 400 errors!)
                 const result = await articleApi.getOneArticle(id);
 
                 if (!result || !result.success) {
@@ -41,7 +41,6 @@ export default function ArticleRead() {
                     setArticle(foundArticle);
                 }
 
-                // 2. Proactive Step-Up: Grab the email from our public profile table using the author UUID
                 if (foundArticle.article_author) {
                     const profileResult = await profileApi.getProfile(
                         foundArticle.article_author,
@@ -106,7 +105,6 @@ export default function ArticleRead() {
     return (
         <main className="min-h-screen bg-gray-900 text-white pt-24 pb-16 px-6 sm:px-12">
             <div className="max-w-3xl mx-auto">
-                {/* Back Link pointing to the catalog list or back to its category dynamically */}
                 <Link
                     to="/catalog"
                     className="text-blue-400 hover:text-blue-300 transition inline-flex items-center gap-1.5 text-sm font-medium mb-8"
