@@ -17,13 +17,17 @@ Check out the live deployment on [Vercel](https://react01-eight.vercel.app/)
 
 The application operates as an optimized SPA utilizing direct PostgREST collection filtering to minimize database query latency and eliminate redundant network joins.
 
-[ React Frontend Web UI ]
-│
-├── (Bearer JWT Auth Headers) ──► [ Supabase PostgREST Engine ]
-│ │
-└── (Public Schema Relation Reads) ◄───────────┼── [ Table: articles ]
-├── [ Table: techs ]
-└── [ Table: profiles ]
+The application operates as an optimized SPA utilizing explicit PostgREST collection filtering to minimize database query latency and eliminate redundant network joins.
+
+```text
+ [ React Frontend Web UI ]
+          │
+          ├── (Bearer JWT Auth Headers) ──► [ Supabase PostgREST Engine ]
+          │                                              │
+          └── (Public Schema Relation Reads) ◄───────────┼── [ Table: articles ]
+                                                         ├── [ Table: techs ]
+                                                         └── [ Table: profiles ]
+```
 
 ### 1. Database Relational Entities Schema
 
