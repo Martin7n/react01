@@ -1,3 +1,4 @@
+import session_clear from "../utils/session_clear";
 import authRequests from "./authRequests";
 
 const baseURL = `${import.meta.env.VITE_SUPABASE_URL}/auth/v1`;
@@ -25,14 +26,6 @@ const authApi = {
 
         return authRequests(`${baseURL}/signup`, options, "Register");
     },
-    // async getUser(accessToken) {
-    //     const options = {
-    //         method: "GET",
-    //         headers: { Authorization: `Bearer ${accessToken}` },
-    //     };
-
-    //     return authRequests(`${baseURL}/user`, options, "Get user");
-    // },
 
     async getUser(accessToken) {
         const requestUser = (token) =>
@@ -53,26 +46,38 @@ const authApi = {
             const expired =
                 error.code === "PGRST303" || /JWT expired/i.test(error.message);
 
+            // If the error isn't due to an expired token, clear tokens and bail out
             if (!expired) {
+                localStorage.removeItem("access_token");
+                localStorage.removeItem("refresh_token");
                 throw error;
             }
 
             const refreshToken = localStorage.getItem("refresh_token");
 
+            // CRITICAL CLEANUP: No refresh token exists to save the session, wipe everything
             if (!refreshToken) {
-                throw error;
+                session_clear();
+                throw new Error("Session expired. No refresh token available.");
             }
 
-            const refreshed = await authApi.refreshSession(refreshToken);
+            try {
+                // Attempt to request a new session pair from Supabase auth endpoints
+                const refreshed = await authApi.refreshSession(refreshToken);
 
-            const newAccessToken = refreshed.data.access_token;
-            const newRefreshToken = refreshed.data.refresh_token;
+                const newAccessToken = refreshed.data.access_token;
+                const newRefreshToken = refreshed.data.refresh_token;
 
-            // Save the renewed session.
-            localStorage.setItem("access_token", newAccessToken);
-            localStorage.setItem("refresh_token", newRefreshToken);
+                localStorage.setItem("access_token", newAccessToken);
+                localStorage.setItem("refresh_token", newRefreshToken);
 
-            return requestUser(newAccessToken);
+                return await requestUser(newAccessToken);
+            } catch (refreshError) {
+                session_clear();
+                throw new Error(
+                    "Session expired. Failed to refresh authentication token.",
+                );
+            }
         }
     },
 };

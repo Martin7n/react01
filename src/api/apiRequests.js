@@ -1,3 +1,4 @@
+import session_clear from "../utils/session_clear";
 import authApi from "./authApi";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
@@ -10,13 +11,24 @@ export default async function apiCollectionRequests(
     action = "Request",
 ) {
     let token = null;
+
+    // check the auth with the backend. If it fails, skiping the Authorization token.
+    // Should  works with the refresh token.
+
     try {
         const storedToken = localStorage.getItem("access_token");
         if (storedToken) {
-            const user = authApi.getUser(storedToken);
+            const user = await authApi.getUser(storedToken);
+            if (!result || result.success === false) {
+                throw new Error(
+                    result?.message ||
+                        "User profile authentication verification rejected.",
+                );
+            }
             token = user?.token || null;
         }
     } catch (tokenError) {
+        session_clear();
         console.log(tokenError);
     }
 

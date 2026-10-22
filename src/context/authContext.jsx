@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import authApi from "../api/authApi";
+import session_clear from "../utils/session_clear";
 
 const AuthContext = createContext(null);
 
@@ -9,6 +10,7 @@ export function AuthProvider({ children }) {
 
     // Restore and validate the session when the app starts
     useEffect(() => {
+        
         const initializeAuth = async () => {
             try {
                 const accessToken = localStorage.getItem("access_token");
@@ -17,7 +19,6 @@ export function AuthProvider({ children }) {
                     return;
                 }
 
-                
                 const result = await authApi.getUser(accessToken);
 
                 if (!result.success) {
@@ -30,18 +31,20 @@ export function AuthProvider({ children }) {
                 localStorage.setItem("user_profile", JSON.stringify(userData));
             } catch (error) {
                 console.error("Authentication initialization failed:", error);
+                session_clear();
+                setUser(null);
 
                 // If the token is invalid, clear the session.
                 // For network errors, ideally preserve it and allow retry.
-                // if (error.status === 401) 
-                  if (error.status)   {
-                    localStorage.removeItem("access_token");
-                    localStorage.removeItem("refresh_token");
-                    localStorage.removeItem("user_profile");
-                    setUser(null);
-                }
+                // if (error.status === 401)
+                // if (error.status) {
+                //     localStorage.removeItem("access_token");
+                //     localStorage.removeItem("refresh_token");
+                //     localStorage.removeItem("user_profile");
+                //     setUser(null);
+                // }
             } finally {
-                setLoading(true);
+                setLoading(false);
             }
         };
 
