@@ -10,6 +10,7 @@ Check out the live deployment on [Vercel](https://react01-eight.vercel.app/)
 - **Secure Database Infrastructure:** [Supabase Cluster Nodes](https://supabase.com)
 
 * **Web UI Hosting Layer:** [SevenTech Portal on Vercel](https://react01-eight.vercel.app/)
+* **Functional Guide:**  [Functional andechnical Specification / SotfUni template](https://github.com/Martin7n/react01/blob/main/Requirements%20and%20Technical%20Specification.pdf)
 
 ---
 
