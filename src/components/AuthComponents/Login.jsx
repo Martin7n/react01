@@ -25,13 +25,17 @@ export default function Login() {
         const validation = login_cleaner(email, password);
         if (!validation.isValid) {
             setFormError(validation.error);
+            setIsSubmitting(false);
             return;
         }
 
         const { email: cleanEmail, password: cleanPwd } = validation.data;
 
         try {
-            const result = await authApi.login({ email, password });
+            const result = await authApi.login({
+                email: cleanEmail,
+                password: cleanPwd,
+            });
 
             if (result && result.success) {
                 loginUser(result.data);
@@ -44,7 +48,10 @@ export default function Login() {
                 return;
             }
         } catch (err) {
+            setFormError("Registration setup error ");
             console.error(err);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 

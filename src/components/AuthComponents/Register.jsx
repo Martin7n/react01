@@ -33,6 +33,7 @@ export default function Register() {
         );
         if (!validation.isValid) {
             setFormError(validation.error);
+            setIsSubmitting(false);
             return;
         }
 
@@ -58,15 +59,20 @@ export default function Register() {
                 );
 
                 // login after reg:
-
-                const loginResult = await authApi.login({
-                    email: finalEmail,
-                    password: finalPassword,
-                });
-                if (loginResult && loginResult.success) {
-                    loginUser(loginResult.data);
+                try {
+                    const loginResult = await authApi.login({
+                        email: finalEmail,
+                        password: finalPassword,
+                    });
+                    if (loginResult && loginResult.success) {
+                        loginUser(loginResult.data);
+                    }
+                    navigate("/");
+                    return;
+                } catch (err) {
+                    console.log(err);
                 }
-                navigate("/");
+                navigate("/login");
                 return;
             }
         } catch (err) {
